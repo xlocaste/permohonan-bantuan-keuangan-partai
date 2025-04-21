@@ -41,6 +41,13 @@ class PartaiController extends Controller
         return redirect()->route('partai.index');
     }
 
+    public function destroy(Partai $partai)
+    {
+        $partai->delete();
+
+        return Redirect::route('partai.index')->with('message', 'Data berhasil dihapus');
+    }
+
     public function edit(Partai $partai)
     {
         return Inertia::render('Partai/Update', [
