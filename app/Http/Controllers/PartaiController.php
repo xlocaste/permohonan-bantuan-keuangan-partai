@@ -18,4 +18,20 @@ class PartaiController extends Controller
             'partai' => $daftarPartai,
         ]);
     }
+
+    public function store(StoreRequest $request)
+    {
+        Partai::create([
+            'nama_partai'=>$request->nama_partai,
+            'nama_ketua'=>$request->nama_ketua,
+            'alamat'=>$request->alamat,
+        ]);
+
+        return redirect()->route('partai.index');
+    }
+
+    public function create()
+    {
+        return Inertia::render('Partai/Add');
+    }
 }

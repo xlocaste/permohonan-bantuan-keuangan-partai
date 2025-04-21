@@ -2,11 +2,11 @@ import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
 import PrimaryButton from '@/Components/PrimaryButton';
-import SecondaryButton from '@/Components/SecondaryButton';
 import { FaTrash } from "react-icons/fa6";
 import { FaRegEdit } from "react-icons/fa";
 
 export default function ListPartai({ auth, partai }) {
+    console.log(partai)
     const handlePageChange = (url) => {
         if (url) {
             router.visit(url);
@@ -39,11 +39,11 @@ export default function ListPartai({ auth, partai }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {partai?.data?.length > 0 ? (
-                                partai.data.map((item) => (
+                            {partai.length > 0 ? (
+                                partai.map((item) => (
                                     <tr key={item.id} className="hover:bg-gray-50">
-                                        <td className="px-4 py-1 border-b text-sm text-gray-700 text-center">{item.nama}</td>
-                                        <td className="px-4 py-1 border-b text-sm text-gray-700 text-center">{item.ketua}</td>
+                                        <td className="px-4 py-1 border-b text-sm text-gray-700 text-center">{item.nama_partai}</td>
+                                        <td className="px-4 py-1 border-b text-sm text-gray-700 text-center">{item.nama_ketua}</td>
                                         <td className="px-4 py-1 border-b text-sm text-gray-700">{item.alamat}</td>
                                         {auth.user && (
                                             <td className="px-4 py-1 border-b text-center">
