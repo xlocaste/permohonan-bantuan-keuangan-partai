@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PartaiController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -57,6 +58,17 @@ Route::prefix('/user')->name('user.')->group(function() {
         Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
     });
     Route::get('/', [UserController::class, 'index'])->name('index');
+});
+
+Route::prefix('/register/user')->name('register.')->group(function() {
+    Route::group(['middleware' => ['auth']], function() {
+        Route::get('/create', [RegisterController::class, 'create'])->name('create');
+        Route::post('/', [RegisterController::class, 'store'])->name('store');
+        Route::put('/{register}', [RegisterController::class, 'update'])->name('update');
+        Route::delete('/{register}', [RegisterController::class, 'destroy'])->name('destroy');
+        Route::get('/{register}/edit', [RegisterController::class, 'edit'])->name('edit');
+    });
+    Route::get('/', [RegisterController::class, 'index'])->name('index');
 });
 
 require __DIR__.'/auth.php';
