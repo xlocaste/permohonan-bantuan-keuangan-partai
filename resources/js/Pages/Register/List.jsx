@@ -1,10 +1,10 @@
 import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { FaCheck, FaTimes } from 'react-icons/fa';
+import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function List({ auth, register }) {
-    console.log(register)
 
     return (
         <AuthenticatedLayout user={auth.user}>
@@ -12,6 +12,13 @@ export default function List({ auth, register }) {
 
             <div className="py-8 max-w-7xl m-8 px-4 sm:px-6 lg:px-8 bg-white rounded-xl">
                 <div className="overflow-x-auto">
+                    <div className='flex justify-end m-4'>
+                        <PrimaryButton>
+                            <Link href={route('register.create')}>
+                                + REGISTER
+                            </Link>
+                        </PrimaryButton>
+                    </div>
                     <table className="min-w-full bg-white border border-gray-200 rounded">
                         <thead className="bg-gray-100">
                             <tr>
@@ -21,7 +28,9 @@ export default function List({ auth, register }) {
                                 <th className="px-4 py-2 border-b text-sm font-semibold text-center">Ketua Partai</th>
                                 <th className="px-4 py-2 border-b text-sm font-semibold text-center">Email</th>
                                 <th className="px-4 py-2 border-b text-sm font-semibold text-center">Alamat</th>
-                                <th className="px-4 py-2 border-b text-sm font-semibold text-center">Action</th>
+                                {!auth.user.roles.some(role => role.name === 'anggota') && (
+                                    <th className="px-4 py-2 border-b text-sm font-semibold text-center">Action</th>
+                                )}
                             </tr>
                         </thead>
                         <tbody>
@@ -34,9 +43,9 @@ export default function List({ auth, register }) {
                                         <td className="px-4 py-2 border-b">{item.partai.nama_ketua}</td>
                                         <td className="px-4 py-2 border-b">{item.user.email}</td>
                                         <td className="px-4 py-2 border-b">{item.alamat}</td>
+                                        {!auth.user.roles.some(role => role.name === 'anggota') && (
                                         <td className="px-4 py-2 border-b">
                                             <div className="flex justify-center gap-2">
-                                                {item.status_verifikasi === 'pending' && (
                                                     <>
                                                         <button
                                                             className="text-green-600 hover:text-green-800"
@@ -51,12 +60,9 @@ export default function List({ auth, register }) {
                                                             <FaTimes />
                                                         </button>
                                                     </>
-                                                )}
-                                                {(item.status_verifikasi === 'disetujui' || item.status_verifikasi === 'ditolak') && (
-                                                    <span className="text-gray-500 italic">Sudah diverifikasi</span>
-                                                )}
                                             </div>
                                         </td>
+                                        )}
                                     </tr>
                                 ))
                             ) : (

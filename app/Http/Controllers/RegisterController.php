@@ -8,15 +8,27 @@ use App\Models\Partai;
 use App\Models\User;
 use App\Http\Requests\Register\StoreRequest;
 use App\Http\Requests\Register\UpdateRequest;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class RegisterController extends Controller
 {
     public function index()
     {
-        $daftarRegister = Register::with(['user', 'partai'])->get();
+        $user = Auth::user()->load('roles');
+
+        if ($user->roles->contains('name', 'anggota')) {
+            $daftarRegister = Register::with(['user', 'partai'])
+                ->where('user_id', $user->id)
+                ->get();
+        } else {
+            $daftarRegister = Register::with(['user', 'partai'])->get();
+        }
 
         return inertia('Register/List', [
+            'auth' => [
+                'user' => $user->load('roles')
+            ],
             'register' => $daftarRegister,
         ]);
     }
@@ -30,7 +42,7 @@ class RegisterController extends Controller
             'user_id' => auth()->user()->id,
         ]);
 
-        return redirect()->route('register.create');
+        return redirect()->route('register.index');
     }
 
     public function create()
