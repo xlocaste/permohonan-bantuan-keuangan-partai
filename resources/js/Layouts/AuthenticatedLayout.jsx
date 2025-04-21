@@ -65,7 +65,7 @@ export default function AuthenticatedLayout({ user, children }) {
                     <p className='w-full text-center font-bold text-xl'>Aplikasi Permohonan Bantuan Keuangan Parpol</p>
                     <div>
                         <Link href={route('logout')} method="post" as="button" className="flex justify-end w-full">
-                            <FaSignOutAlt />
+                            <FaSignOutAlt className='text-gray-500'/>
                         </Link>
                     </div>
                 </div>

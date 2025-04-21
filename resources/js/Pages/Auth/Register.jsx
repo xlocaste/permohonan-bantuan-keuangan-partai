@@ -12,6 +12,7 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+        kontak: '',
     });
 
     useEffect(() => {
@@ -63,6 +64,23 @@ export default function Register() {
                     />
 
                     <InputError message={errors.email} className="mt-2" />
+                </div>
+                
+                <div className="mt-4">
+                    <InputLabel htmlFor="kontak" value="Kontak" />
+
+                    <TextInput
+                        id="kontak"
+                        type="tel"
+                        name="kontak"
+                        value={data.kontak}
+                        className="mt-1 block w-full"
+                        autoComplete="tel"
+                        onChange={(e) => setData('kontak', e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.kontak} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
