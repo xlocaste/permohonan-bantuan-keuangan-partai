@@ -4,6 +4,7 @@ import { Head } from '@inertiajs/react';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
 export default function List({ auth, register }) {
+    console.log(register)
 
     return (
         <AuthenticatedLayout user={auth.user}>
