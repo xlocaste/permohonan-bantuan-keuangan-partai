@@ -18,7 +18,7 @@ export default function AuthenticatedLayout({ user, children }) {
                             <Link href={route('partai.index')} className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
                                 Partai
                             </Link>
-                            <Link href="/users" className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
+                            <Link href={route('user.index')} className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
                                 Users
                             </Link>
                             <Link href="/roles" className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">

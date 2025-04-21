@@ -5,8 +5,9 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import { FaTrash } from "react-icons/fa6";
 import { FaRegEdit } from "react-icons/fa";
 
-export default function ListPartai({ auth, partai }) {
-    console.log(partai)
+export default function ListUser({ auth, user }) {
+    console.log(user
+        )
     const handlePageChange = (url) => {
         if (url) {
             router.visit(url);
@@ -15,14 +16,14 @@ export default function ListPartai({ auth, partai }) {
 
     return (
         <AuthenticatedLayout user={auth.user}>
-            <Head title="Daftar Partai" />
+            <Head title="Daftar Pengguna" />
 
             <div className="py-8 max-w-7xl m-8 px-4 sm:px-6 lg:px-8 bg-white rounded-xl">
                 <div className="overflow-x-auto">
                     <div className='flex justify-end m-4'>
                         <PrimaryButton>
-                            <Link href={route('partai.create')}>
-                                + TAMBAH PARTAI
+                            <Link href={route('user.create')}>
+                                + TAMBAH PENGGUNA
                             </Link>
                         </PrimaryButton>
                     </div>
@@ -30,26 +31,28 @@ export default function ListPartai({ auth, partai }) {
                     <table className="min-w-full bg-white border border-gray-200 rounded">
                         <thead className="bg-gray-100">
                             <tr>
-                                <th className="px-4 py-2 border-b text-sm font-semibold text-center text-gray-700">Nama Partai</th>
-                                <th className="px-4 py-2 border-b text-sm font-semibold text-center text-gray-700">Nama Ketua Partai</th>
-                                <th className="px-4 py-2 border-b text-sm font-semibold text-center text-gray-700">Alamat</th>
+                                <th className="px-4 py-2 border-b text-sm font-semibold text-center text-gray-700">Nama</th>
+                                <th className="px-4 py-2 border-b text-sm font-semibold text-center text-gray-700">Email</th>
+                                <th className="px-4 py-2 border-b text-sm font-semibold text-center text-gray-700">Kontak</th>
+                                <th className="px-4 py-2 border-b text-sm font-semibold text-center text-gray-700">Role</th>
                                 {auth.user && (
                                     <th className="px-4 py-2 border-b text-sm font-semibold text-center text-gray-700">ACTION</th>
                                 )}
                             </tr>
                         </thead>
                         <tbody>
-                            {partai.length > 0 ? (
-                                partai.map((item) => (
+                            {user.length > 0 ? (
+                                user.map((item) => (
                                     <tr key={item.id} className="hover:bg-gray-50">
-                                        <td className="px-4 py-1 border-b text-sm text-gray-700 text-center">{item.nama_partai}</td>
-                                        <td className="px-4 py-1 border-b text-sm text-gray-700 text-center">{item.nama_ketua}</td>
-                                        <td className="px-4 py-1 border-b text-sm text-gray-700">{item.alamat}</td>
+                                        <td className="px-4 py-1 border-b text-sm text-gray-700 text-center">{item.name}</td>
+                                        <td className="px-4 py-1 border-b text-sm text-gray-700 text-center">{item.email}</td>
+                                        <td className="px-4 py-1 border-b text-sm text-gray-700 text-center">{item.kontak}</td>
+                                        <td className="px-4 py-1 border-b text-sm text-gray-700 text-center">{item.role}</td>
                                         {auth.user && (
                                             <td className="px-4 py-1 border-b text-center">
                                                 <div className='flex gap-2 justify-center'>
                                                     <Link
-                                                        href={route('partai.edit', item.id)}
+                                                        href={route('user.edit', item.id)}
                                                         className='text-yellow-500'
                                                     >
                                                         <FaRegEdit />
@@ -58,8 +61,8 @@ export default function ListPartai({ auth, partai }) {
                                                         as="button"
                                                         className="text-red-400"
                                                         onClick={() => {
-                                                            if (confirm('Yakin ingin menghapus partai ini?')) {
-                                                                router.delete(route('partai.destroy', item.id));
+                                                            if (confirm('Yakin ingin menghapus pengguna ini?')) {
+                                                                router.delete(route('user.destroy', item.id));
                                                             }
                                                         }}
                                                     >
@@ -73,7 +76,7 @@ export default function ListPartai({ auth, partai }) {
                             ) : (
                                 <tr>
                                     <td colSpan="4" className="px-4 py-4 text-center text-gray-500">
-                                        Tidak ada data partai.
+                                        Tidak ada data pengguna.
                                     </td>
                                 </tr>
                             )}
