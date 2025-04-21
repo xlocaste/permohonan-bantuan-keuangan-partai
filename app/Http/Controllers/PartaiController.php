@@ -30,6 +30,24 @@ class PartaiController extends Controller
         return redirect()->route('partai.index');
     }
 
+    public function update(UpdateRequest $request, Partai $partai)
+    {
+        $partai->update([
+            'nama_partai'=>$request->nama_partai,
+            'nama_ketua'=>$request->nama_ketua,
+            'alamat'=>$request->alamat,
+        ]);
+
+        return redirect()->route('partai.index');
+    }
+
+    public function edit(Partai $partai)
+    {
+        return Inertia::render('Partai/Update', [
+            'partai' => $partai,
+        ]);
+    }
+
     public function create()
     {
         return Inertia::render('Partai/Add');
