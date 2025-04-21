@@ -21,4 +21,11 @@ class UserController extends Controller
             'user' => $daftarUser,
         ]);
     }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        return Redirect::route('user.index')->with('message', 'Data berhasil dihapus');
+    }
 }

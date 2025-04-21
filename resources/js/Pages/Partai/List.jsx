@@ -6,7 +6,6 @@ import { FaTrash } from "react-icons/fa6";
 import { FaRegEdit } from "react-icons/fa";
 
 export default function ListPartai({ auth, partai }) {
-    console.log(partai)
     const handlePageChange = (url) => {
         if (url) {
             router.visit(url);

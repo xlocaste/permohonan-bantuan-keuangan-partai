@@ -6,8 +6,6 @@ import { FaTrash } from "react-icons/fa6";
 import { FaRegEdit } from "react-icons/fa";
 
 export default function ListUser({ auth, user }) {
-    console.log(user
-        )
     const handlePageChange = (url) => {
         if (url) {
             router.visit(url);
