@@ -12,9 +12,10 @@ class RegisterController extends Controller
 {
     public function index()
     {
-        $daftarRegister = Register::with(['user', 'partai'])->paginate(10);
+        $daftarRegister = Register::with(['user', 'partai'])->get();
 
         return inertia('Register/List', [
+            'auth' => auth()->user(),
             'register' => $daftarRegister,
         ]);
     }

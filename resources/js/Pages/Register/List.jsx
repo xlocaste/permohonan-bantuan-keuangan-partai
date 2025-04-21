@@ -14,21 +14,25 @@ export default function List({ auth, register }) {
                     <table className="min-w-full bg-white border border-gray-200 rounded">
                         <thead className="bg-gray-100">
                             <tr>
-                                <th className="px-4 py-2 border-b text-sm font-semibold text-center">NIK</th>
                                 <th className="px-4 py-2 border-b text-sm font-semibold text-center">Nama</th>
+                                <th className="px-4 py-2 border-b text-sm font-semibold text-center">NIK</th>
+                                <th className="px-4 py-2 border-b text-sm font-semibold text-center">Nama Partai</th>
+                                <th className="px-4 py-2 border-b text-sm font-semibold text-center">Ketua Partai</th>
+                                <th className="px-4 py-2 border-b text-sm font-semibold text-center">Email</th>
                                 <th className="px-4 py-2 border-b text-sm font-semibold text-center">Alamat</th>
-                                <th className="px-4 py-2 border-b text-sm font-semibold text-center">Partai</th>
-                                <th className="px-4 py-2 border-b text-sm font-semibold text-center">Aksi</th>
+                                <th className="px-4 py-2 border-b text-sm font-semibold text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {register.length > 0 ? (
                                 register.map((item) => (
                                     <tr key={item.id} className="hover:bg-gray-50 text-center">
-                                        <td className="px-4 py-2 border-b">{item.nik}</td>
                                         <td className="px-4 py-2 border-b">{item.user.name}</td>
-                                        <td className="px-4 py-2 border-b">{item.alamat}</td>
+                                        <td className="px-4 py-2 border-b">{item.nik}</td>
                                         <td className="px-4 py-2 border-b">{item.partai.nama_partai}</td>
+                                        <td className="px-4 py-2 border-b">{item.partai.nama_ketua}</td>
+                                        <td className="px-4 py-2 border-b">{item.user.email}</td>
+                                        <td className="px-4 py-2 border-b">{item.alamat}</td>
                                         <td className="px-4 py-2 border-b">
                                             <div className="flex justify-center gap-2">
                                                 {item.status_verifikasi === 'pending' && (
