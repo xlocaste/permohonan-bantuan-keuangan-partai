@@ -12,11 +12,11 @@ export default function AuthenticatedLayout({ user, children }) {
                 <nav className="flex flex-col p-4 space-y-6 text-center">
                     {user?.roles?.some(role => role.name === 'admin') && (
                         <>
-                            <Link href="/dashboard" className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
+                            <Link href={route('dashboard')} className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
                                 Register
                             </Link>
-                            <Link href="/dashboard" className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
-                                Data Register
+                            <Link href={route('partai.index')} className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
+                                Partai
                             </Link>
                             <Link href="/users" className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
                                 Users
@@ -32,10 +32,10 @@ export default function AuthenticatedLayout({ user, children }) {
 
                     {user?.roles?.some(role => role.name === 'verifikator') && (
                         <>
-                            <Link href="/dashboard" className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
+                            <Link href={route('dashboard')} className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
                                 Dashboard
                             </Link>
-                            <Link href="/dashboard" className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
+                            <Link href={route('dashboard')} className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
                                 Profile
                             </Link>
                             <Link href="/roles" className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
@@ -46,10 +46,10 @@ export default function AuthenticatedLayout({ user, children }) {
 
                     {user?.roles?.some(role => role.name === 'anggota') && (
                         <>
-                            <Link href="/dashboard" className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
+                            <Link href={route('dashboard')} className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
                                 Dashboard
                             </Link>
-                            <Link href="/dashboard" className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
+                            <Link href={route('dashboard')} className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
                                 Profile
                             </Link>
                             <Link href="/roles" className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">

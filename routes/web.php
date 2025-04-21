@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PartaiController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -33,6 +34,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::prefix('/partai')->name('partai.')->group(function() {
+    Route::group(['middleware' => ['auth']], function() {
+        Route::get('/create', [PartaiController::class, 'create'])->name('create');
+        Route::post('/', [PartaiController::class, 'store'])->name('store');
+        Route::put('/{partai}', [PartaiController::class, 'update'])->name('update');
+        Route::delete('/{partai}', [PartaiController::class, 'destroy'])->name('destroy');
+        Route::get('/{partai}/edit', [PartaiController::class, 'edit'])->name('edit');
+    });
+    Route::get('/', [PartaiController::class, 'index'])->name('index');
 });
 
 require __DIR__.'/auth.php';
