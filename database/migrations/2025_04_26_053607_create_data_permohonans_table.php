@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('suket');
             $table->string('rekening');
             $table->text('rencana_penggunaan');
-            $table->string('irelasi');
+            $table->string('realisasi');
             $table->string('surat_pernyataan');
             $table->enum('status', ['menunggu', 'diproses', 'disetujui', 'ditolak'])->default('menunggu');
             $table->text('keterangan');

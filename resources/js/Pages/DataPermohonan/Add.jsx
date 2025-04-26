@@ -55,7 +55,7 @@ export default function AddDataPermohonan({ auth, Partai }) {
                         <select
                             value={data.partai_id}
                             onChange={(e) => setData('partai_id', e.target.value)}
-                            className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-600 cursor-not-allowed"
                         >
                             <option value="">Pilih Partai</option>
                             {Partai.map((partai) => (
@@ -67,15 +67,82 @@ export default function AddDataPermohonan({ auth, Partai }) {
                         {errors.partai_id && <div className="text-red-500 text-sm mt-1">{errors.partai_id}</div>}
                     </div>
 
+                    <div className='flex space-x-4'>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Surat Permohonan</label>
+                            <input
+                                type="file"
+                                onChange={(e) => setData('surat_permohonan', e.target.files[0])}
+                                className="w-full border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-600 cursor-not-allowed"
+                            />
+                            {errors.surat_permohonan && (
+                                <div className="text-red-500 text-sm mt-1">{errors.surat_permohonan}</div>
+                            )}
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Surat DPP</label>
+                            <input
+                                type="file"
+                                onChange={(e) => setData('surat_dpp', e.target.files[0])}
+                                className="w-full border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-600 cursor-not-allowed"
+                            />
+                            {errors.surat_dpp && <div className="text-red-500 text-sm mt-1">{errors.surat_dpp}</div>}
+                        </div>
+                    </div>
+
+                    <div className='flex space-x-4'>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Surat Pernyataan</label>
+                            <input
+                                type="file"
+                                onChange={(e) => setData('surat_pernyataan', e.target.files[0])}
+                                className="w-full border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-600 cursor-not-allowed"
+                            />
+                            {errors.surat_pernyataan && (
+                                <div className="text-red-500 text-sm mt-1">{errors.surat_pernyataan}</div>
+                            )}
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Rencana Penggunaan</label>
+                            <input
+                                type="file"
+                                onChange={(e) => setData('rencana_penggunaan', e.target.files[0])}
+                                className="w-full border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-600 cursor-not-allowed"
+                            />
+                            {errors.rencana_penggunaan && (
+                                <div className="text-red-500 text-sm mt-1">{errors.rencana_penggunaan}</div>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className='flex space-x-4'>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Irelasi</label>
+                            <input
+                                type="file"
+                                onChange={(e) => setData('irelasi', e.target.files[0])}
+                                className="w-full border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-600 cursor-not-allowed"
+                            />
+                            {errors.irelasi && <div className="text-red-500 text-sm mt-1">{errors.irelasi}</div>}
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Surat Keterangan</label>
+                            <input
+                                type="file"
+                                onChange={(e) => setData('suket', e.target.files[0])}
+                                className="w-full border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-600 cursor-not-allowed"
+                            />
+                            {errors.suket && <div className="text-red-500 text-sm mt-1">{errors.suket}</div>}
+                        </div>
+                    </div>
+
+
                     {[
-                        ['surat_permohonan', 'Surat Permohonan'],
-                        ['surat_dpp', 'Surat DPP'],
                         ['npwp', 'NPWP'],
-                        ['suket', 'Surat Keterangan'],
                         ['rekening', 'Rekening'],
-                        ['rencana_penggunaan', 'Rencana Penggunaan'],
-                        ['irelasi', 'Irelasi'],
-                        ['surat_pernyataan', 'Surat Pernyataan'],
                         ['keterangan', 'Keterangan']
                     ].map(([field, label]) => (
                         <div key={field}>

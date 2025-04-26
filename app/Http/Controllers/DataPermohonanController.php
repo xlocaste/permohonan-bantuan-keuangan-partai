@@ -26,18 +26,25 @@ class DataPermohonanController extends Controller
 
     public function store(StoreRequest $request)
     {
+        $suratPermohonanPath = $request->file('surat_permohonan')->store('surat_permohonan', 'public');
+        $suratDppPath = $request->file('surat_dpp')->store('surat_dpp', 'public');
+        $suketPath = $request->file('suket')->store('suket', 'public');
+        $rencanaPenggunaanPath = $request->file('rencana_penggunaan')->store('rencana_penggunaan', 'public');
+        $irelasiPath = $request->file('irelasi')->store('irelasi', 'public');
+        $suratPernyataanPath = $request->file('surat_pernyataan')->store('surat_pernyataan', 'public');
+
         DataPermohonan::create([
             'partai_id'=>$request->partai_id,
             'user_id'=>$request->user_id,
             'tanggal_permohonan'=>$request->tanggal_permohonan,
-            'surat_permohonan'=>$request->surat_permohonan,
-            'surat_dpp'=>$request->surat_dpp,
+            'surat_permohonan'=>$suratPermohonanPath,
+            'surat_dpp'=>$suratDppPath,
             'npwp'=>$request->npwp,
-            'suket'=>$request->suket,
+            'suket'=>$suketPath,
             'rekening'=>$request->rekening,
-            'rencana_penggunaan'=>$request->rencana_penggunaan,
-            'irelasi'=>$request->irelasi,
-            'surat_pernyataan'=>$request->surat_pernyataan,
+            'rencana_penggunaan'=>$rencanaPenggunaanPath,
+            'irelasi'=>$irelasiPath,
+            'surat_pernyataan'=>$suratPernyataanPath,
             'status'=>$request->status,
             'keterangan'=>$request->keterangan,
         ]);
