@@ -21,7 +21,7 @@ class DataPermohonan extends Model
         "suket",
         "rekening",
         "rencana_penggunaan",
-        "irelasi",
+        "realisasi",
         "surat_pernyataan",
         "status",
         "keterangan",

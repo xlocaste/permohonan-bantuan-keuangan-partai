@@ -31,7 +31,7 @@ class UpdateRequest extends FormRequest
             "suket"=> ['required'],
             "rekening"=> ['required'],
             "rencana_penggunaan"=> ['required'],
-            "irelasi"=> ['required'],
+            "realisasi"=> ['required'],
             "surat_pernyataan"=> ['required'],
             "status"=> ['required'],
             "keterangan"=> ['required'],

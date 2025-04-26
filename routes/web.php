@@ -79,6 +79,7 @@ Route::prefix('/data-permohonan')->name('data-permohonan.')->group(function() {
         Route::put('/{dataPermohonan}', [DataPermohonanController::class, 'update'])->name('update');
         Route::delete('/{dataPermohonan}', [DataPermohonanController::class, 'destroy'])->name('destroy');
         Route::get('/{dataPermohonan}/edit', [DataPermohonanController::class, 'edit'])->name('edit');
+        Route::post('/{dataPermohonan}/verifikasi', [DataPermohonanController::class, 'verifikasi'])->name('verifikasi');
     });
     Route::get('/', [DataPermohonanController::class, 'index'])->name('index');
 });

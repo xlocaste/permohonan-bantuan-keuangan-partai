@@ -30,7 +30,7 @@ class DataPermohonanController extends Controller
         $suratDppPath = $request->file('surat_dpp')->store('surat_dpp', 'public');
         $suketPath = $request->file('suket')->store('suket', 'public');
         $rencanaPenggunaanPath = $request->file('rencana_penggunaan')->store('rencana_penggunaan', 'public');
-        $irelasiPath = $request->file('irelasi')->store('irelasi', 'public');
+        $realisasiPath = $request->file('realisasi')->store('realisasi', 'public');
         $suratPernyataanPath = $request->file('surat_pernyataan')->store('surat_pernyataan', 'public');
 
         DataPermohonan::create([
@@ -43,13 +43,28 @@ class DataPermohonanController extends Controller
             'suket'=>$suketPath,
             'rekening'=>$request->rekening,
             'rencana_penggunaan'=>$rencanaPenggunaanPath,
-            'irelasi'=>$irelasiPath,
+            'realisasi'=>$realisasiPath,
             'surat_pernyataan'=>$suratPernyataanPath,
             'status'=>$request->status,
             'keterangan'=>$request->keterangan,
         ]);
 
         return redirect()->route('data-permohonan.index');
+    }
+
+    public function verifikasi($dataPermohonan)
+    {
+        $permohonan = DataPermohonan::findOrFail($dataPermohonan);
+
+        $permohonan->jumlah_verifikasi += 1;
+
+        if ($permohonan->jumlah_verifikasi >= 7) {
+            $permohonan->status = 'disetujui';
+        }
+
+        $permohonan->save();
+
+        return redirect()->back()->with('success', 'Permohonan berhasil diverifikasi.');
     }
 
     public function create()

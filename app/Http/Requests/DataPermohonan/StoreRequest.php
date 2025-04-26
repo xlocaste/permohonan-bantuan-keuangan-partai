@@ -31,7 +31,7 @@ class StoreRequest extends FormRequest
             "suket"=> ['required', 'file'],
             "rekening"=> ['required'],
             "rencana_penggunaan"=> ['required', 'file'],
-            "irelasi"=> ['required', 'file'],
+            "realisasi"=> ['required', 'file'],
             "surat_pernyataan"=> ['required', 'file'],
             "status"=> ['required'],
             "keterangan"=> ['required'],

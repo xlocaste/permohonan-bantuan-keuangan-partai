@@ -2,11 +2,10 @@ import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
 import PrimaryButton from '@/Components/PrimaryButton';
-import { FaTrash } from "react-icons/fa6";
-import { FaRegEdit } from "react-icons/fa";
+import { FaCheck, FaTimes } from 'react-icons/fa';
 
-export default function ListDataPermohonan({ auth, dataPermohonan }) {
-    console.log(dataPermohonan)
+export default function ListDataPermohonan({ user, auth, dataPermohonan }) {
+    // console.log(auth)
     const handlePageChange = (url) => {
         if (url) {
             router.visit(url);
@@ -19,6 +18,7 @@ export default function ListDataPermohonan({ auth, dataPermohonan }) {
 
             <div className="py-8 max-w-[940px] m-8 px-4 sm:px-6 lg:px-8 bg-white rounded-xl">
                 <div className="overflow-x-auto">
+                    {auth?.user?.roles?.some(role => role.name === 'anggota') && (
                     <div className='flex justify-end m-4'>
                         <PrimaryButton>
                             <Link href={route('data-permohonan.create')}>
@@ -26,6 +26,7 @@ export default function ListDataPermohonan({ auth, dataPermohonan }) {
                             </Link>
                         </PrimaryButton>
                     </div>
+                    )}
 
                     <div className='overflow-x-auto'>
                         <table className="min-w-full bg-white border border-gray-200 rounded">
@@ -43,7 +44,7 @@ export default function ListDataPermohonan({ auth, dataPermohonan }) {
                                     <th className="px-4 py-2 border-b text-sm font-semibold text-center text-gray-700">Rencana Penggunaan</th>
                                     <th className="px-4 py-2 border-b text-sm font-semibold text-center text-gray-700">Realisasi</th>
                                     <th className="px-4 py-2 border-b text-sm font-semibold text-center text-gray-700">Keterangan</th>
-                                    {auth.user && (
+                                    {auth.user?.roles?.some(role => role.name === 'verifikator') && (
                                         <th className="px-4 py-2 border-b text-sm font-semibold text-center text-gray-700">ACTION</th>
                                     )}
                                 </tr>
@@ -93,22 +94,26 @@ export default function ListDataPermohonan({ auth, dataPermohonan }) {
                                                 ) : '-'}
                                             </td>
                                             <td className="px-4 py-1 border-b text-sm text-gray-700 text-center">
-                                                {item.irelasi ? (
-                                                    <a href={`storage/${item.irelasi}`} target="_blank" className="text-blue-600 hover:text-blue-800">
+                                                {item.realisasi ? (
+                                                    <a href={`storage/${item.realisasi}`} target="_blank" className="text-blue-600 hover:text-blue-800">
                                                         Lihat File
                                                     </a>
                                                 ) : '-'}
                                             </td>
                                             <td className="px-4 py-1 border-b text-sm text-gray-700 text-center">{item.keterangan}</td>
-                                            {auth.user && (
+                                            {auth?.user?.roles?.some(role => role.name === 'verifikator') && (
                                                 <td className="px-4 py-1 border-b text-center">
                                                     <div className='flex gap-2 justify-center'>
-                                                        <Link
-                                                            href={route('data-permohonan.edit', item.id)}
-                                                            className='text-yellow-500'
+                                                        <button
+                                                            onClick={() => {
+                                                                if (confirm('Yakin ingin menyetujui permohonan ini?')) {
+                                                                    router.post(route('data-permohonan.verifikasi', item.id));
+                                                                }
+                                                            }}
+                                                            className='text-green-500 hover:text-green-700'
                                                         >
-                                                            <FaRegEdit />
-                                                        </Link>
+                                                            <FaCheck size={20} />
+                                                        </button>
                                                         <Link
                                                             as="button"
                                                             className="text-red-400"
@@ -118,7 +123,7 @@ export default function ListDataPermohonan({ auth, dataPermohonan }) {
                                                                 }
                                                             }}
                                                         >
-                                                            <FaTrash />
+                                                            <FaTimes size={20} />
                                                         </Link>
                                                     </div>
                                                 </td>

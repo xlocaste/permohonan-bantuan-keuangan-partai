@@ -14,7 +14,7 @@ export default function AddDataPermohonan({ auth, Partai }) {
         suket: '',
         rekening: '',
         rencana_penggunaan: '',
-        irelasi: '',
+        realisasi: '',
         surat_pernyataan: '',
         status: 'menunggu',
         keterangan: '',
@@ -119,13 +119,13 @@ export default function AddDataPermohonan({ auth, Partai }) {
 
                     <div className='flex space-x-4'>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Irelasi</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Realisasi</label>
                             <input
                                 type="file"
-                                onChange={(e) => setData('irelasi', e.target.files[0])}
+                                onChange={(e) => setData('realisasi', e.target.files[0])}
                                 className="w-full border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-600 cursor-not-allowed"
                             />
-                            {errors.irelasi && <div className="text-red-500 text-sm mt-1">{errors.irelasi}</div>}
+                            {errors.realisasi && <div className="text-red-500 text-sm mt-1">{errors.realisasi}</div>}
                         </div>
 
                         <div>
