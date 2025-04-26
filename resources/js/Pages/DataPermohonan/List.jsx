@@ -4,7 +4,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
-export default function ListDataPermohonan({ user, auth, dataPermohonan }) {
+export default function ListDataPermohonan({ auth, dataPermohonan, notifikasi }) {
     // console.log(auth)
     const handlePageChange = (url) => {
         if (url) {
@@ -16,10 +16,27 @@ export default function ListDataPermohonan({ user, auth, dataPermohonan }) {
         <AuthenticatedLayout user={auth.user}>
             <Head title="Daftar Permohonan" />
 
-            <div className="py-8 max-w-[940px] m-8 px-4 sm:px-6 lg:px-8 bg-white rounded-xl">
+            {auth?.user?.roles?.some(role => role.name === 'anggota') && (
+                notifikasi.length > 0 ? (
+                    <ul className="space-y-2">
+                        {notifikasi.map((notif, index) => (
+                        <li key={index} className="py-4 max-w-[960px] m-8 px-4 sm:px-6 lg:px-8 bg-white rounded-xl">
+                            <p>{notif.pesan}</p>
+                            <p className="text-sm text-gray-500">Status: {notif.status}</p>
+                        </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <div className='py-4 max-w-[960px] m-8 px-4 sm:px-6 lg:px-8 bg-white rounded-xl'>
+                        <p className="text-gray-600">Data masih belum diverifikasi.</p>
+                    </div>
+                )
+            )}
+
+            <div className="py-8 max-w-[960px] m-8 px-4 sm:px-6 lg:px-8 bg-white rounded-xl">
                 <div className="overflow-x-auto">
                     {auth?.user?.roles?.some(role => role.name === 'anggota') && (
-                    <div className='flex justify-end m-4'>
+                    <div className='flex justify-end m-4 mt-0'>
                         <PrimaryButton>
                             <Link href={route('data-permohonan.create')}>
                                 + TAMBAH PERMOHONAN

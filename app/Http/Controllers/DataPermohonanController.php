@@ -15,13 +15,32 @@ class DataPermohonanController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
+
         $daftarDataPermohonan = DataPermohonan::with('user', 'partai')->paginate(10);
+
+        $dataPermohonanUser = DataPermohonan::where('user_id', $user->id)->get();
+
+        $notifikasi = $dataPermohonanUser->map(function ($permohonan) {
+            $jumlahVerifikasi = VerifikasiDataPermohonan::where('data_permohonan_id', $permohonan->id)->count();
+
+            if ($jumlahVerifikasi > 0) {
+                return [
+                    'permohonan_id' => $permohonan->id,
+                    'pesan' => "Data permohonan ID {$permohonan->id} sudah diverifikasi oleh {$jumlahVerifikasi} verifikator.",
+                    'status' => $permohonan->status,
+                ];
+            }
+
+            return null;
+        })->filter()->values();
 
         return inertia('DataPermohonan/List', [
             'auth' => [
-                'user' => Auth::user(),
+                'user' => $user,
             ],
             'dataPermohonan' => $daftarDataPermohonan,
+            'notifikasi' => $notifikasi,
         ]);
     }
 
