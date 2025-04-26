@@ -21,7 +21,7 @@ export default function ListDataPermohonan({ auth, dataPermohonan, notifikasi })
                     <ul className="space-y-2">
                         {notifikasi.map((notif, index) => (
                         <li key={index} className="py-4 max-w-[960px] m-8 px-4 sm:px-6 lg:px-8 bg-white rounded-xl">
-                            <p>{notif.pesan}</p>
+                            <p className='flex items-center'><FaCheck className='text-green-600 mr-1'/> {notif.pesan}</p>
                             <p className="text-sm text-gray-500">Status: {notif.status}</p>
                         </li>
                         ))}
