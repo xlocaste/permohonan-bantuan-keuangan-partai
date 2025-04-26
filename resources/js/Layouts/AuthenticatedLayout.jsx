@@ -21,7 +21,7 @@ export default function AuthenticatedLayout({ user, children }) {
                             <Link href={route('user.index')} className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
                                 Users
                             </Link>
-                            <Link href="/roles" className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
+                            <Link href={route('data-permohonan.index')} className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
                                 Permohonan Bantuan Keuangan
                             </Link>
                             <Link href="/settings" className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
@@ -38,7 +38,7 @@ export default function AuthenticatedLayout({ user, children }) {
                             <Link href={route('dashboard')} className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
                                 Profile
                             </Link>
-                            <Link href="/roles" className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
+                            <Link href={route('data-permohonan.index')} className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
                                 Data Permohonan Bantuan Keuangan
                             </Link>
                         </>
@@ -52,7 +52,7 @@ export default function AuthenticatedLayout({ user, children }) {
                             <Link href={route('dashboard')} className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
                                 Profile
                             </Link>
-                            <Link href="/roles" className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
+                            <Link href={route('data-permohonan.index')} className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
                                 Permohonan Bantuan Keuangan
                             </Link>
                         </>

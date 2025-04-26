@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DataPermohonanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PartaiController;
 use App\Http\Controllers\UserController;
@@ -69,6 +70,17 @@ Route::prefix('/register/user')->name('register.')->group(function() {
         Route::get('/{register}/edit', [RegisterController::class, 'edit'])->name('edit');
     });
     Route::get('/', [RegisterController::class, 'index'])->name('index');
+});
+
+Route::prefix('/data-permohonan')->name('data-permohonan.')->group(function() {
+    Route::group(['middleware' => ['auth']], function() {
+        Route::get('/create', [DataPermohonanController::class, 'create'])->name('create');
+        Route::post('/', [DataPermohonanController::class, 'store'])->name('store');
+        Route::put('/{dataPermohonan}', [DataPermohonanController::class, 'update'])->name('update');
+        Route::delete('/{dataPermohonan}', [DataPermohonanController::class, 'destroy'])->name('destroy');
+        Route::get('/{dataPermohonan}/edit', [DataPermohonanController::class, 'edit'])->name('edit');
+    });
+    Route::get('/', [DataPermohonanController::class, 'index'])->name('index');
 });
 
 require __DIR__.'/auth.php';
