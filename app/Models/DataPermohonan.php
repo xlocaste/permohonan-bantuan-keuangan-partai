@@ -36,4 +36,10 @@ class DataPermohonan extends Model
     {
         return $this->belongsTo(Partai::class);
     }
+
+    public function verifikasi()
+    {
+        return $this->hasMany(VerifikasiDataPermohonan::class);
+    }
+
 }

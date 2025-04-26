@@ -6,6 +6,7 @@ use App\Http\Requests\DataPermohonan\StoreRequest;
 use App\Models\DataPermohonan;
 use App\Models\Partai;
 use App\Models\User;
+use App\Models\VerifikasiDataPermohonan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -52,19 +53,30 @@ class DataPermohonanController extends Controller
         return redirect()->route('data-permohonan.index');
     }
 
-    public function verifikasi($dataPermohonan)
+    public function verifikasi($id)
     {
-        $permohonan = DataPermohonan::findOrFail($dataPermohonan);
+        $user = auth()->user();
 
-        $permohonan->jumlah_verifikasi += 1;
+        $sudahVerifikasi = VerifikasiDataPermohonan::where('data_permohonan_id', $id)
+            ->where('user_id', $user->id)
+            ->exists();
 
-        if ($permohonan->jumlah_verifikasi >= 7) {
-            $permohonan->status = 'disetujui';
+        if ($sudahVerifikasi) {
+            return back()->with('message', 'Anda sudah memverifikasi permohonan ini.');
         }
 
-        $permohonan->save();
+        VerifikasiDataPermohonan::create([
+            'data_permohonan_id' => $id,
+            'user_id' => $user->id,
+        ]);
 
-        return redirect()->back()->with('success', 'Permohonan berhasil diverifikasi.');
+        $jumlah = VerifikasiDataPermohonan::where('data_permohonan_id', $id)->count();
+
+        if ($jumlah >= 7) {
+            DataPermohonan::where('id', $id)->update(['status' => 'disetujui']);
+        }
+
+        return back()->with('message', 'Berhasil verifikasi.');
     }
 
     public function create()
