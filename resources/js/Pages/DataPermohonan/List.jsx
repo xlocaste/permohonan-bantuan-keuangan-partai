@@ -39,8 +39,8 @@ export default function ListDataPermohonan({ auth, dataPermohonan }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {dataPermohonan.length > 0 ? (
-                                dataPermohonan.map((item) => (
+                            {dataPermohonan.data.length > 0 ? (
+                                dataPermohonan.data.map((item) => (
                                     <tr key={item.id} className="hover:bg-gray-50">
                                         <td className="px-4 py-1 border-b text-sm text-gray-700 text-center">{item.partai?.nama_partai || '-'}</td>
                                         <td className="px-4 py-1 border-b text-sm text-gray-700 text-center">{item.user?.name || '-'}</td>

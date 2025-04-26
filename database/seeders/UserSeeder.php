@@ -39,6 +39,18 @@ class UserSeeder extends Seeder
             ]
         );
 
+
+        $verifikator = User::firstOrCreate(
+            ['email' => 'verifikator@example.com'],
+            [
+                'name' => 'verifikator',
+                'kontak' => '08321321321',
+                'email' => 'verifikator@example.com',
+                'password' => Hash::make('password'),
+                ]
+            );
+
+        $verifikator->assignRole($verifikatorRole);
         $anggota->assignRole($anggotaRole);
         $admin->assignRole($adminRole);
     }

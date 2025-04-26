@@ -21,11 +21,11 @@ return new class extends Migration
             $table->string('npwp');
             $table->string('suket');
             $table->string('rekening');
-            $table->string('rencana_penggunaan');
+            $table->text('rencana_penggunaan');
             $table->string('irelasi');
             $table->string('surat_pernyataan');
-            $table->string('status');
-            $table->string('keterangan');
+            $table->enum('status', ['menunggu', 'diproses', 'disetujui', 'ditolak'])->default('menunggu');
+            $table->text('keterangan');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
