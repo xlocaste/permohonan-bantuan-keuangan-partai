@@ -48,13 +48,6 @@ export default function List({ auth, register }) {
                             {message}
                         </div>
                     )}
-                    <div className='flex justify-end m-4'>
-                        <PrimaryButton>
-                            <Link href={route('register.create')}>
-                                + REGISTER
-                            </Link>
-                        </PrimaryButton>
-                    </div>
                     <table className="min-w-full bg-white border border-gray-200 rounded">
                         <thead className="bg-gray-100">
                             <tr>
