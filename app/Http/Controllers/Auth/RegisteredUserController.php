@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Partai;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -21,7 +22,9 @@ class RegisteredUserController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/Register');
+        return Inertia::render('Auth/Register', [
+            'partai' => Partai::all(),
+        ]);
     }
 
     /**
@@ -34,6 +37,8 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'kontak' => 'required|string|max:255',
+            'partai_id' => 'nullable|string|max:255',
+            'nik' => 'nullable|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
@@ -41,15 +46,18 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'kontak' => $request->kontak,
+            'partai_id' => $request->partai_id,
+            'nik' => $request->nik,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'is_approved' => false,
         ]);
 
         $user->assignRole('anggota');
 
         event(new Registered($user));
 
-        Auth::login($user);
+        // Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);
     }

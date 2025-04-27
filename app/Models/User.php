@@ -22,6 +22,9 @@ class User extends Authenticatable
         'name',
         'kontak',
         'email',
+        'partai_id',
+        'nik',
+        'is_approved',
         'password',
         'role',
     ];
@@ -49,6 +52,11 @@ class User extends Authenticatable
     public function verifikasi()
     {
         return $this->hasMany(VerifikasiDataPermohonan::class);
+    }
+
+    public function partai()
+    {
+        return $this->belongsTo(Partai::class);
     }
 
 }

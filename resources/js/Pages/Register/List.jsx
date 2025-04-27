@@ -1,17 +1,53 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function List({ auth, register }) {
+    console.log("register",register)
+    console.log("auth",auth)
+
+    const { message } = usePage().props;
+
+    const { data, setData, post } = useForm({
+        action: '',
+    });
+
+    const handleVerifikasi = (userId, action) => {
+        setData('action', action);
+        setData('userId', userId);
+    };
+
+    useEffect(() => {
+        if (data.action !== '') {
+            console.log("Data setelah setData:", data);
+
+            post(route('register.approval', data.userId), {
+                onSuccess: (response) => {
+                    if (response.is_approved !== undefined) {
+                        window.location.href = '/register/user';
+                    }
+                },
+                onError: (errors) => {
+                    console.error(errors);
+                },
+            });
+        }
+    }, [data]);
+
 
     return (
-        <AuthenticatedLayout user={auth.user}>
+        <AuthenticatedLayout user={auth}>
             <Head title="Verifikasi Pendaftar" />
 
             <div className="py-8 max-w-7xl m-8 px-4 sm:px-6 lg:px-8 bg-white rounded-xl">
                 <div className="overflow-x-auto">
+                    {message && (
+                        <div className="alert alert-success">
+                            {message}
+                        </div>
+                    )}
                     <div className='flex justify-end m-4'>
                         <PrimaryButton>
                             <Link href={route('register.create')}>
@@ -27,8 +63,7 @@ export default function List({ auth, register }) {
                                 <th className="px-4 py-2 border-b text-sm font-semibold text-center">Nama Partai</th>
                                 <th className="px-4 py-2 border-b text-sm font-semibold text-center">Ketua Partai</th>
                                 <th className="px-4 py-2 border-b text-sm font-semibold text-center">Email</th>
-                                <th className="px-4 py-2 border-b text-sm font-semibold text-center">Alamat</th>
-                                {!auth.user.roles.some(role => role.name === 'anggota') && (
+                                {!auth.roles?.some(role => role.name === 'anggota') && (
                                     <th className="px-4 py-2 border-b text-sm font-semibold text-center">Action</th>
                                 )}
                             </tr>
@@ -37,29 +72,26 @@ export default function List({ auth, register }) {
                             {register.length > 0 ? (
                                 register.map((item) => (
                                     <tr key={item.id} className="hover:bg-gray-50 text-center">
-                                        <td className="px-4 py-2 border-b">{item.user.name}</td>
+                                        <td className="px-4 py-2 border-b">{item.name}</td>
                                         <td className="px-4 py-2 border-b">{item.nik}</td>
-                                        <td className="px-4 py-2 border-b">{item.partai.nama_partai}</td>
-                                        <td className="px-4 py-2 border-b">{item.partai.nama_ketua}</td>
-                                        <td className="px-4 py-2 border-b">{item.user.email}</td>
-                                        <td className="px-4 py-2 border-b">{item.alamat}</td>
-                                        {!auth.user.roles.some(role => role.name === 'anggota') && (
+                                        <td className="px-4 py-2 border-b">{item.partai?.nama_partai}</td>
+                                        <td className="px-4 py-2 border-b">{item.partai?.nama_ketua}</td>
+                                        <td className="px-4 py-2 border-b">{item.email}</td>
+                                        {!auth.roles?.some(role => role.name === 'anggota') && (
                                         <td className="px-4 py-2 border-b">
                                             <div className="flex justify-center gap-2">
-                                                    <>
-                                                        <button
-                                                            className="text-green-600 hover:text-green-800"
-                                                            onClick={() => handleVerifikasi(item.id, 'disetujui')}
-                                                        >
-                                                            <FaCheck />
-                                                        </button>
-                                                        <button
-                                                            className="text-red-600 hover:text-red-800"
-                                                            onClick={() => handleVerifikasi(item.id, 'ditolak')}
-                                                        >
-                                                            <FaTimes />
-                                                        </button>
-                                                    </>
+                                                <button
+                                                    className="text-green-600 hover:text-green-800"
+                                                    onClick={() => handleVerifikasi(item.id, 'disetujui')}
+                                                >
+                                                    <FaCheck />
+                                                </button>
+                                                <button
+                                                    className="text-red-600 hover:text-red-800"
+                                                    onClick={() => handleVerifikasi(item.id, 'ditolak')}
+                                                >
+                                                    <FaTimes />
+                                                </button>
                                             </div>
                                         </td>
                                         )}

@@ -26,32 +26,33 @@ class UserSeeder extends Seeder
                 'kontak' => '08123123123',
                 'email' => 'admin@example.com',
                 'password' => Hash::make('password'),
+                'is_approved' => 1,
             ]
         );
 
-        $anggota = User::firstOrCreate(
-            ['email' => 'user@example.com'],
-            [
-                'name' => 'User',
-                'kontak' => '08321321321',
-                'email' => 'user@example.com',
-                'password' => Hash::make('password'),
-            ]
-        );
+        // $anggota = User::firstOrCreate(
+        //     ['email' => 'user@example.com'],
+        //     [
+        //         'name' => 'User',
+        //         'kontak' => '08321321321',
+        //         'email' => 'user@example.com',
+        //         'password' => Hash::make('password'),
+        //     ]
+        // );
 
 
-        $verifikator = User::firstOrCreate(
-            ['email' => 'verifikator@example.com'],
-            [
-                'name' => 'verifikator',
-                'kontak' => '08321321321',
-                'email' => 'verifikator@example.com',
-                'password' => Hash::make('password'),
-                ]
-            );
+        // $verifikator = User::firstOrCreate(
+        //     ['email' => 'verifikator@example.com'],
+        //     [
+        //         'name' => 'verifikator',
+        //         'kontak' => '08321321321',
+        //         'email' => 'verifikator@example.com',
+        //         'password' => Hash::make('password'),
+        //         ]
+        //     );
 
-        $verifikator->assignRole($verifikatorRole);
-        $anggota->assignRole($anggotaRole);
+        // $verifikator->assignRole($verifikatorRole);
+        // $anggota->assignRole($anggotaRole);
         $admin->assignRole($adminRole);
     }
 }

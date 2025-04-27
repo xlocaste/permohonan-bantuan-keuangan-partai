@@ -15,21 +15,13 @@ class RegisterController extends Controller
 {
     public function index()
     {
-        $user = Auth::user()->load('roles');
-
-        if ($user->roles->contains('name', 'anggota')) {
-            $daftarRegister = Register::with(['user', 'partai'])
-                ->where('user_id', $user->id)
-                ->get();
-        } else {
-            $daftarRegister = Register::with(['user', 'partai'])->get();
-        }
+        $register = User::where('is_approved', false)
+                    ->with('partai')
+                    ->get();
 
         return inertia('Register/List', [
-            'auth' => [
-                'user' => $user->load('roles')
-            ],
-            'register' => $daftarRegister,
+            'register' => $register,
+            'auth' => auth()->user(),
         ]);
     }
 
@@ -52,5 +44,20 @@ class RegisterController extends Controller
         'User' => User::all(),
         ]);
     }
-    
+
+    public function updateApproval(Request $request, $userId)
+    {
+        $user = User::findOrFail($userId);
+
+        if ($user->roles->contains('name', 'admin')) {
+            return response()->json(['error' => 'Tidak dapat mengubah status approval untuk admin'], 400);
+        }
+
+        $isApproved = $request->input('action') === 'disetujui' ? true : false;
+
+        $user->update([
+            'is_approved' => $isApproved,
+        ]);
+    }
+
 }

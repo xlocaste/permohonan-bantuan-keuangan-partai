@@ -46,9 +46,6 @@ export default function AuthenticatedLayout({ user, children }) {
 
                     {user?.roles?.some(role => role.name === 'anggota') && (
                         <>
-                            <Link href={route('register.index')} className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
-                                Register
-                            </Link>
                             <Link href={route('profile.edit')} className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
                                 Profile
                             </Link>

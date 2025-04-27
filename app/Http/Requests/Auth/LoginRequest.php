@@ -41,11 +41,25 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+        $credentials = $this->only('email', 'password');
 
+        $user = \App\Models\User::where('email', $this->email)->first();
+
+        if (!$user) {
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'email' => __('Email tidak ditemukan.'),
+            ]);
+        }
+
+        if (!$user->is_approved) {
+            throw ValidationException::withMessages([
+                'email' => __('Akun Anda belum disetujui oleh admin.'),
+            ]);
+        }
+
+        if (!Auth::attempt($credentials, $this->boolean('remember'))) {
+            throw ValidationException::withMessages([
+                'email' => __('Email atau password salah.'),
             ]);
         }
 

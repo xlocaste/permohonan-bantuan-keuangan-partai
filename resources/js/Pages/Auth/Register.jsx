@@ -6,10 +6,11 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-export default function Register() {
+export default function Register({ partai }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
+        partai_id: '',
         password: '',
         password_confirmation: '',
         kontak: '',
@@ -50,6 +51,22 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
+                    <InputLabel htmlFor="nik" value="NIK" />
+
+                    <TextInput
+                        id="nik"
+                        name="number"
+                        value={data.nik}
+                        className="mt-1 block w-full"
+                        autoComplete="nik"
+                        onChange={(e) => setData('nik', e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.nik} className="mt-2" />
+                </div>
+
+                <div className="mt-4">
                     <InputLabel htmlFor="email" value="Email" />
 
                     <TextInput
@@ -65,7 +82,29 @@ export default function Register() {
 
                     <InputError message={errors.email} className="mt-2" />
                 </div>
-                
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="partai_id" value="Partai" />
+
+                    <select
+                        id="partai_id"
+                        name="partai_id"
+                        value={data.partai_id}
+                        className="mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                        onChange={(e) => setData('partai_id', e.target.value)}
+                        required
+                    >
+                        <option value="">Pilih Partai</option>
+                        {partai.map((item) => (
+                            <option key={item.id} value={item.id}>
+                                {item.nama_partai}
+                            </option>
+                        ))}
+                    </select>
+
+                    <InputError message={errors.partai_id} className="mt-2" />
+                </div>
+
                 <div className="mt-4">
                     <InputLabel htmlFor="kontak" value="Kontak" />
 

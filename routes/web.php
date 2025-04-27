@@ -69,6 +69,7 @@ Route::prefix('/register/user')->name('register.')->group(function() {
         Route::delete('/{register}', [RegisterController::class, 'destroy'])->name('destroy');
         Route::get('/{register}/edit', [RegisterController::class, 'edit'])->name('edit');
     });
+    Route::post('/verifikasi/{userId}', [RegisterController::class, 'updateApproval'])->name('approval');
     Route::get('/', [RegisterController::class, 'index'])->name('index');
 });
 
