@@ -16,8 +16,34 @@ class DataPermohonanController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $role = $user->roles->first()?->name;
+        $verifikatorStep = null;
 
-        $daftarDataPermohonan = DataPermohonan::with('user', 'partai')->paginate(10);
+        if ($role && str_starts_with($role, 'verifikator-')) {
+            $verifikatorStep = (int) str_replace('verifikator-', '', $role);
+        }
+
+        $query = DataPermohonan::with('user', 'partai');
+
+        if ($verifikatorStep !== null) {
+            if ($verifikatorStep === 1) {
+                // Verifikator-1 lihat semua yang belum ada verifikasi
+                $query->whereDoesntHave('verifikasi');
+            } else {
+                // Verifikator selain 1
+                $query->whereHas('verifikasi', function ($q) use ($verifikatorStep) {
+                    $q->select('data_permohonan_id')
+                    ->groupBy('data_permohonan_id')
+                    ->havingRaw('COUNT(*) = ?', [$verifikatorStep - 1]);
+                })->whereDoesntHave('verifikasi', function ($q) use ($verifikatorStep) {
+                    $q->select('data_permohonan_id')
+                    ->groupBy('data_permohonan_id')
+                    ->havingRaw('COUNT(*) >= ?', [$verifikatorStep]);
+                });
+            }
+        }
+
+        $daftarDataPermohonan = $query->paginate(10);
 
         $dataPermohonanUser = DataPermohonan::where('user_id', $user->id)->get();
 

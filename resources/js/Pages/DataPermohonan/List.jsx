@@ -61,7 +61,9 @@ export default function ListDataPermohonan({ auth, dataPermohonan, notifikasi })
                                     <th className="px-4 py-2 border-b text-sm font-semibold text-center text-gray-700">Rencana Penggunaan</th>
                                     <th className="px-4 py-2 border-b text-sm font-semibold text-center text-gray-700">Realisasi</th>
                                     <th className="px-4 py-2 border-b text-sm font-semibold text-center text-gray-700">Keterangan</th>
-                                    {auth.user?.roles?.some(role => role.name === 'verifikator') && (
+                                    {auth.user?.roles?.some(role =>
+                                        ['verifikator-1', 'verifikator-2', 'verifikator-3', 'verifikator-4', 'verifikator-5', 'verifikator-6', 'verifikator-7'].includes(role.name)
+                                    ) && (
                                         <th className="px-4 py-2 border-b text-sm font-semibold text-center text-gray-700">ACTION</th>
                                     )}
                                 </tr>
@@ -118,7 +120,9 @@ export default function ListDataPermohonan({ auth, dataPermohonan, notifikasi })
                                                 ) : '-'}
                                             </td>
                                             <td className="px-4 py-1 border-b text-sm text-gray-700 text-center">{item.keterangan}</td>
-                                            {auth?.user?.roles?.some(role => role.name === 'verifikator') && (
+                                            {auth.user?.roles?.some(role =>
+                                                ['verifikator-1', 'verifikator-2', 'verifikator-3', 'verifikator-4', 'verifikator-5', 'verifikator-6', 'verifikator-7'].includes(role.name)
+                                            ) && (
                                                 <td className="px-4 py-1 border-b text-center">
                                                     <div className='flex gap-2 justify-center'>
                                                         <button

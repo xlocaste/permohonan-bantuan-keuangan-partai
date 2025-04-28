@@ -2,6 +2,7 @@ import { Link } from '@inertiajs/react';
 import { FaSignOutAlt } from "react-icons/fa";
 
 export default function AuthenticatedLayout({ user, children }) {
+    console.log(user)
     return (
         <div className="min-h-screen flex">
             <aside className="w-64 bg-gray-800 text-white flex-shrink-0">
@@ -30,7 +31,9 @@ export default function AuthenticatedLayout({ user, children }) {
                         </>
                     )}
 
-                    {user?.roles?.some(role => role.name === 'verifikator') && (
+                    {user?.roles?.some(role =>
+                        ['verifikator-1', 'verifikator-2', 'verifikator-3', 'verifikator-4', 'verifikator-5', 'verifikator-6', 'verifikator-7'].includes(role.name)
+                    ) && (
                         <>
                             <Link href={route('dashboard')} className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
                                 Dashboard
