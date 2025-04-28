@@ -27,10 +27,8 @@ class DataPermohonanController extends Controller
 
         if ($verifikatorStep !== null) {
             if ($verifikatorStep === 1) {
-                // Verifikator-1 lihat semua yang belum ada verifikasi
                 $query->whereDoesntHave('verifikasi');
             } else {
-                // Verifikator selain 1
                 $query->whereHas('verifikasi', function ($q) use ($verifikatorStep) {
                     $q->select('data_permohonan_id')
                     ->groupBy('data_permohonan_id')
@@ -41,6 +39,8 @@ class DataPermohonanController extends Controller
                     ->havingRaw('COUNT(*) >= ?', [$verifikatorStep]);
                 });
             }
+        } else {
+            $query->where('user_id', $user->id);
         }
 
         $daftarDataPermohonan = $query->paginate(10);
