@@ -75,7 +75,11 @@ export default function List({ auth, register }) {
                                             <div className="flex justify-center gap-2">
                                                 <button
                                                     className="text-green-600 hover:text-green-800"
-                                                    onClick={() => handleVerifikasi(item.id, 'disetujui')}
+                                                    onClick={() => {
+                                                        if (confirm('Yakin ingin menyetujui permohonan ini?')) {
+                                                            handleVerifikasi(item.id, 'disetujui');
+                                                        }
+                                                    }}
                                                 >
                                                     <FaCheck />
                                                 </button>
