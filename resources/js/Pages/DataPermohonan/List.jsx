@@ -5,7 +5,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
 export default function ListDataPermohonan({ auth, dataPermohonan, notifikasi }) {
-    // console.log(auth)
+    console.log(dataPermohonan)
     const handlePageChange = (url) => {
         if (url) {
             router.visit(url);

@@ -70,6 +70,33 @@ class DataPermohonanController extends Controller
         ]);
     }
 
+    public function laporan()
+    {
+        $user = Auth::user();
+
+        $dataTerverifikasiPenuh = DataPermohonan::with('user', 'partai')
+            ->whereHas('verifikasi', function ($q) {
+                $q->select('data_permohonan_id')
+                ->groupBy('data_permohonan_id')
+                ->havingRaw('COUNT(*) = 7');
+            })
+            ->paginate(10);
+
+        return inertia('Laporan/List', [
+            'auth' => [
+                'user' => $user,
+            ],
+            'dataPermohonan' => $dataTerverifikasiPenuh,
+        ]);
+    }
+
+    public function print($id)
+    {
+        $permohonan = DataPermohonan::with(['user', 'partai'])->findOrFail($id);
+
+        return view('permohonan.print', compact('permohonan'));
+    }
+
     public function store(StoreRequest $request)
     {
         $suratPermohonanPath = $request->file('surat_permohonan')->store('surat_permohonan', 'public');

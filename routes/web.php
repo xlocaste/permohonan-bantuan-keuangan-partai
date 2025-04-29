@@ -85,4 +85,16 @@ Route::prefix('/data-permohonan')->name('data-permohonan.')->group(function() {
     Route::get('/', [DataPermohonanController::class, 'index'])->name('index');
 });
 
+Route::prefix('/laporan')->name('laporan.')->group(function() {
+    Route::group(['middleware' => ['auth']], function() {
+        Route::get('/create', [DataPermohonanController::class, 'create'])->name('create');
+        Route::post('/', [DataPermohonanController::class, 'store'])->name('store');
+        Route::put('/{dataPermohonan}', [DataPermohonanController::class, 'update'])->name('update');
+        Route::delete('/{dataPermohonan}', [DataPermohonanController::class, 'destroy'])->name('destroy');
+        Route::get('/{dataPermohonan}/edit', [DataPermohonanController::class, 'edit'])->name('edit');
+        Route::post('/{id}/verifikasi', [DataPermohonanController::class, 'verifikasi'])->name('verifikasi');
+    });
+    Route::get('/', [DataPermohonanController::class, 'laporan'])->name('index');
+});
+
 require __DIR__.'/auth.php';

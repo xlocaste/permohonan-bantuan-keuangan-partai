@@ -25,7 +25,7 @@ export default function AuthenticatedLayout({ user, children }) {
                             <Link href={route('data-permohonan.index')} className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
                                 Permohonan Bantuan Keuangan
                             </Link>
-                            <Link href="/settings" className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
+                            <Link href={route('laporan.index')} className="hover:bg-gray-700 px-3 py-2 rounded border-b border-gray-700">
                                 Laporan
                             </Link>
                         </>
