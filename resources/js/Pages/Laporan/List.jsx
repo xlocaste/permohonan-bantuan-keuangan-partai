@@ -1,6 +1,7 @@
 import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
+import { IoPrint } from "react-icons/io5";
 
 export default function ListLaporan({ auth, dataPermohonan }) {
     console.log(dataPermohonan)
@@ -33,6 +34,15 @@ export default function ListLaporan({ auth, dataPermohonan }) {
                                         <td className="px-4 py-2 border-b text-sm text-center">{item.npwp}</td>
                                         <td className="px-4 py-2 border-b text-sm text-center">{item.rekening}</td>
                                         <td className="px-4 py-2 border-b text-sm text-center">{item.keterangan}</td>
+                                        <td className="px-4 py-2 border-b text-sm text-center">
+                                            <Link
+                                                href={route('laporan.print', item.id)}
+                                                target="_blank"
+                                                className="text-blue-500 text-xl rounded"
+                                            >
+                                                <IoPrint />
+                                            </Link>
+                                        </td>
                                     </tr>
                                 ))
                             ) : (

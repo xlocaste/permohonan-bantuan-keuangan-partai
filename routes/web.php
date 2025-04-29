@@ -95,6 +95,7 @@ Route::prefix('/laporan')->name('laporan.')->group(function() {
         Route::post('/{id}/verifikasi', [DataPermohonanController::class, 'verifikasi'])->name('verifikasi');
     });
     Route::get('/', [DataPermohonanController::class, 'laporan'])->name('index');
+    Route::get('/{dataPermohonan}/print', [DataPermohonanController::class, 'print'])->name('print');
 });
 
 require __DIR__.'/auth.php';

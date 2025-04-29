@@ -90,11 +90,13 @@ class DataPermohonanController extends Controller
         ]);
     }
 
-    public function print($id)
+    public function print($dataPermohonan)
     {
-        $permohonan = DataPermohonan::with(['user', 'partai'])->findOrFail($id);
+        $permohonan = DataPermohonan::with(['user', 'partai'])->findOrFail($dataPermohonan);
 
-        return view('permohonan.print', compact('permohonan'));
+        return Inertia::render('Laporan/Print', [
+            'permohonan' => $permohonan,
+        ]);
     }
 
     public function store(StoreRequest $request)
