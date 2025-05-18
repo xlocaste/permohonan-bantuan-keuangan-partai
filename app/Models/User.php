@@ -59,4 +59,9 @@ class User extends Authenticatable
         return $this->belongsTo(Partai::class);
     }
 
+    public function aktivitas()
+    {
+        return $this->hasMany(Aktivitas::class);
+    }
+
 }

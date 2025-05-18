@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AktivitasController;
 use App\Http\Controllers\DataPermohonanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PartaiController;
@@ -96,6 +97,12 @@ Route::prefix('/laporan')->name('laporan.')->group(function() {
     });
     Route::get('/', [DataPermohonanController::class, 'laporan'])->name('index');
     Route::get('/{dataPermohonan}/print', [DataPermohonanController::class, 'print'])->name('print');
+});
+
+Route::prefix('/aktivitas')->name('aktivitas.')->group(function() {
+    Route::group(['middleware' => ['auth']], function() {
+        Route::get('/', [AktivitasController::class, 'index'])->name('index');
+    });
 });
 
 require __DIR__.'/auth.php';
