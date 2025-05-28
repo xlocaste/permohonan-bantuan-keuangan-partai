@@ -55,6 +55,15 @@ class DataPermohonanController extends Controller
         $notifikasi = $dataPermohonanUser->map(function ($permohonan) {
             $jumlahVerifikasi = VerifikasiDataPermohonan::where('data_permohonan_id', $permohonan->id)->count();
 
+            if ($permohonan->status === 'ditolak') {
+                return [
+                    'permohonan_id' => $permohonan->id,
+                    'pesan' => "Data permohonan ID {$permohonan->id} ditolak. Alasan: {$permohonan->alasan_penolakan}",
+                    'status' => $permohonan->status,
+                    'alasan_penolakan' => $permohonan->alasan_penolakan,
+                ];
+            }
+
             if ($jumlahVerifikasi > 0) {
                 return [
                     'permohonan_id' => $permohonan->id,

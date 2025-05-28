@@ -8,6 +8,7 @@ export default function ListDataPermohonan({ auth, dataPermohonan, notifikasi })
     const [showModal, setShowModal] = useState(false);
     const [selectedPermohonanId, setSelectedPermohonanId] = useState(null);
     const [pesanPenolakan, setPesanPenolakan] = useState("");
+    const [activeNotifikasi, setActiveNotifikasi] = useState(notifikasi || []);
 
     const handleTolak = () => {
         if (!pesanPenolakan.trim()) {
@@ -27,6 +28,10 @@ export default function ListDataPermohonan({ auth, dataPermohonan, notifikasi })
         });
     };
 
+    const handleDismissNotif = (index) => {
+        setActiveNotifikasi(prev => prev.filter((_, i) => i !== index));
+    };
+
     console.log(dataPermohonan)
     const handlePageChange = (url) => {
         if (url) {
@@ -39,19 +44,31 @@ export default function ListDataPermohonan({ auth, dataPermohonan, notifikasi })
             <Head title="Daftar Permohonan" />
 
             {auth?.user?.roles?.some(role => role.name === 'anggota') && (
-                notifikasi.length > 0 ? (
+                activeNotifikasi.length > 0 ? (
                     <ul className="space-y-2">
-                        {notifikasi.map((notif, index) => (
-                        <li key={index} className="py-4 max-w-[960px] m-8 px-4 sm:px-6 lg:px-8 bg-white rounded-xl">
-                            <p className='flex items-center'><FaCheck className='text-green-600 mr-1'/> {notif.pesan}</p>
-                            <p className="text-sm text-gray-500">Status : {notif.status}</p>
-                            <p className="text-sm text-gray-500">Pesan :{notif.alasan_penolakan}</p>
-                        </li>
+                        {activeNotifikasi.map((notif, index) => (
+                            <li key={index} className="py-4 max-w-[960px] mx-8 mt-8 px-4 sm:px-6 lg:px-8 bg-white rounded-xl border border-gray-200">
+                                <button
+                                    onClick={() => handleDismissNotif(index)}
+                                    className="absolute top-2 right-2 text-gray-400 hover:text-gray-700"
+                                >
+                                    &times;
+                                </button>
+                                <p className='flex items-center'>
+                                    {notif.status === 'ditolak' ? (
+                                        <FaTimes className="mr-1 text-red-600" />
+                                    ) : (
+                                        <FaCheck className="mr-1 text-green-600" />
+                                    )}
+                                    {notif.pesan}
+                                </p>
+                                <p className="text-sm text-gray-500">Status: {notif.status}</p>
+                            </li>
                         ))}
                     </ul>
                 ) : (
                     <div className='py-4 max-w-[960px] m-8 px-4 sm:px-6 lg:px-8 bg-white rounded-xl'>
-                        <p className="text-gray-600">Data masih belum diverifikasi.</p>
+                        <p className="text-gray-600">Data masih belum diverifikasi atau semua notifikasi sudah ditutup.</p>
                     </div>
                 )
             )}
