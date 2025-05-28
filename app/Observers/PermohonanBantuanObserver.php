@@ -28,7 +28,7 @@ class PermohonanBantuanObserver
         if (Auth::check()) {
             Aktivitas::create([
                 'user_id' => Auth::id(),
-                'deskripsi' => ucfirst($aksi) . ' permohonan bantuan: ' . ($model->judul ?? ' (data tidak ada)'),
+                'deskripsi' => ucfirst($aksi) . ' permohonan bantuan: ' . ($model->tanggal_permohonan ?? ' (data tidak ada)'),
                 'waktu' => now(),
             ]);
         }
