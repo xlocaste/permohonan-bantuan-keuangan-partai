@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\VerifikasiDataPermohonan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class DataPermohonanController extends Controller
@@ -159,5 +160,12 @@ class DataPermohonanController extends Controller
             'Partai' => Partai::all(),
             'User' => User::all(),
         ]);
+    }
+
+    public function destroy(DataPermohonan $dataPermohonan)
+    {
+        $dataPermohonan->delete();
+
+        return Redirect::route('data-permohonan.index')->with('message', 'Data berhasil dihapus');
     }
 }
