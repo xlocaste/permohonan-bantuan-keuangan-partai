@@ -1,10 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
 export default function ListDataPermohonan({ auth, dataPermohonan, notifikasi }) {
+    const [showModal, setShowModal] = useState(false);
+    const [selectedPermohonanId, setSelectedPermohonanId] = useState(null);
+    const [pesanPenolakan, setPesanPenolakan] = useState("");
+
+    const handleTolak = () => {
+        if (!pesanPenolakan.trim()) {
+            alert("Alasan penolakan harus diisi.");
+            return;
+        }
+
+        router.put(route('data-permohonan.update', selectedPermohonanId), {
+            status: 'ditolak',
+            alasan_penolakan: pesanPenolakan,
+        }, {
+            onSuccess: () => {
+                setShowModal(false);
+                setPesanPenolakan("");
+                setSelectedPermohonanId(null);
+            },
+        });
+    };
+
     console.log(dataPermohonan)
     const handlePageChange = (url) => {
         if (url) {
@@ -22,7 +44,8 @@ export default function ListDataPermohonan({ auth, dataPermohonan, notifikasi })
                         {notifikasi.map((notif, index) => (
                         <li key={index} className="py-4 max-w-[960px] m-8 px-4 sm:px-6 lg:px-8 bg-white rounded-xl">
                             <p className='flex items-center'><FaCheck className='text-green-600 mr-1'/> {notif.pesan}</p>
-                            <p className="text-sm text-gray-500">Status: {notif.status}</p>
+                            <p className="text-sm text-gray-500">Status : {notif.status}</p>
+                            <p className="text-sm text-gray-500">Pesan :{notif.alasan_penolakan}</p>
                         </li>
                         ))}
                     </ul>
@@ -135,17 +158,15 @@ export default function ListDataPermohonan({ auth, dataPermohonan, notifikasi })
                                                         >
                                                             <FaCheck size={20} />
                                                         </button>
-                                                        <Link
-                                                            as="button"
-                                                            className="text-red-400"
+                                                        <button
+                                                            className="text-red-500 hover:text-red-700"
                                                             onClick={() => {
-                                                                if (confirm('Yakin ingin menghapus permohonan ini?')) {
-                                                                    router.delete(route('data-permohonan.destroy', item.id));
-                                                                }
+                                                                setSelectedPermohonanId(item.id);
+                                                                setShowModal(true);
                                                             }}
                                                         >
                                                             <FaTimes size={20} />
-                                                        </Link>
+                                                        </button>
                                                     </div>
                                                 </td>
                                             )}
@@ -160,6 +181,38 @@ export default function ListDataPermohonan({ auth, dataPermohonan, notifikasi })
                                 )}
                             </tbody>
                         </table>
+                        {showModal && (
+                            <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+                                <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                                    <h2 className="text-lg font-semibold mb-4">Alasan Penolakan</h2>
+                                    <textarea
+                                        className="w-full border rounded p-2 mb-4"
+                                        rows="4"
+                                        value={pesanPenolakan}
+                                        onChange={(e) => setPesanPenolakan(e.target.value)}
+                                        placeholder="Tuliskan alasan penolakan..."
+                                    />
+                                    <div className="flex justify-end gap-2">
+                                        <button
+                                            className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded"
+                                            onClick={() => {
+                                                setShowModal(false);
+                                                setPesanPenolakan("");
+                                                setSelectedPermohonanId(null);
+                                            }}
+                                        >
+                                            Batal
+                                        </button>
+                                        <button
+                                            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                                            onClick={handleTolak}
+                                        >
+                                            Tolak
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

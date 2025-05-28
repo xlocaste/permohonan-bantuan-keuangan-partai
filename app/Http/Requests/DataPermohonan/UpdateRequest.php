@@ -22,19 +22,8 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "partai_id"=> ['required'],
-            "user_id"=> ['required'],
-            "tanggal_permohonan"=> ['required'],
-            "surat_permohonan"=> ['required'],
-            "surat_dpp"=> ['required'],
-            "npwp"=> ['required'],
-            "suket"=> ['required'],
-            "rekening"=> ['required'],
-            "rencana_penggunaan"=> ['required'],
-            "realisasi"=> ['required'],
-            "surat_pernyataan"=> ['required'],
             "status"=> ['required'],
-            "keterangan"=> ['required'],
+            "alasan_penolakan"=> ['required'],
         ];
     }
 }

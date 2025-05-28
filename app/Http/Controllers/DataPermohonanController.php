@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DataPermohonan\StoreRequest;
+use App\Http\Requests\DataPermohonan\UpdateRequest;
 use App\Models\DataPermohonan;
 use App\Models\Partai;
 use App\Models\User;
@@ -40,6 +41,9 @@ class DataPermohonanController extends Controller
                     ->havingRaw('COUNT(*) >= ?', [$verifikatorStep]);
                 });
             }
+
+            $query->where('status', '!=', 'ditolak');
+
         } else {
             $query->where('user_id', $user->id);
         }
@@ -56,6 +60,7 @@ class DataPermohonanController extends Controller
                     'permohonan_id' => $permohonan->id,
                     'pesan' => "Data permohonan ID {$permohonan->id} sudah diverifikasi oleh {$jumlahVerifikasi} verifikator.",
                     'status' => $permohonan->status,
+                    'alasan_penolakan' => $permohonan->alasan_penolakan,
                 ];
             }
 
@@ -124,6 +129,21 @@ class DataPermohonanController extends Controller
             'status'=>$request->status,
             'keterangan'=>$request->keterangan,
         ]);
+
+        return redirect()->route('data-permohonan.index');
+    }
+
+    public function update(UpdateRequest $request, $dataPermohonan)
+    {
+        $permohonan = DataPermohonan::findOrFail($dataPermohonan);
+
+        $permohonan->status = $request->status;
+
+        $permohonan->alasan_penolakan = $request->status === 'ditolak'
+            ? $request->alasan_penolakan
+            : null;
+
+        $permohonan->save();
 
         return redirect()->route('data-permohonan.index');
     }
