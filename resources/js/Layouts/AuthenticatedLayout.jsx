@@ -7,6 +7,7 @@ import { LuCalendarClock } from "react-icons/lu";
 import { MdChecklistRtl, MdOutlineSpaceDashboard } from "react-icons/md";
 import { VscOrganization } from "react-icons/vsc";
 import { HiOutlineDocumentReport } from "react-icons/hi";
+import { LuLayoutDashboard } from "react-icons/lu";
 
 export default function AuthenticatedLayout({ user, children }) {
     console.log(user)
@@ -66,6 +67,9 @@ export default function AuthenticatedLayout({ user, children }) {
 
                     {user?.roles?.some(role => role.name === 'anggota') && (
                         <>
+                            <Link href={route('dashboard')} className="flex items-center gap-2 px-3 py-2 text-lg hover:text-xl transition-all duration-300 border-gray-700">
+                                <LuLayoutDashboard /> Dashboard
+                            </Link>
                             <Link href={route('profile.edit')} className="flex items-center gap-2 px-3 py-2 text-lg hover:text-xl transition-all duration-300 border-gray-700">
                                 <FaRegUser /> Profile
                             </Link>

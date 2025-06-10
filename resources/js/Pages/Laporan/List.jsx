@@ -47,7 +47,7 @@ export default function ListLaporan({ auth, dataPermohonan }) {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="5" className="px-4 py-4 text-center text-gray-500">
+                                    <td colSpan="7" className="px-4 py-4 text-center text-gray-500">
                                         Tidak ada data permohonan yang diverifikasi 7 verifikator.
                                     </td>
                                 </tr>
