@@ -33,9 +33,13 @@ export default function Dashboard({ auth, totalSudahAcc, totalBelumAcc }) {
                             </div>
                         </div>
                         )}
+                        {auth.user?.roles?.some(role =>
+                            ['anggota'].includes(role.name)
+                        ) && (
                         <div className='p-8'>
                             <p>testing</p>
                         </div>
+                        )}
                     </div>
                 </div>
             </div>
