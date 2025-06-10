@@ -14,6 +14,9 @@ export default function Dashboard({ auth, totalSudahAcc, totalBelumAcc }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        {auth.user?.roles?.some(role =>
+                            ['verifikator-1', 'verifikator-2', 'verifikator-3', 'verifikator-4', 'verifikator-5', 'verifikator-6', 'verifikator-7'].includes(role.name)
+                        ) && (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-8">
                             <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-green-200">
                                 <div className="p-6">
@@ -28,6 +31,10 @@ export default function Dashboard({ auth, totalSudahAcc, totalBelumAcc }) {
                                     <p className="mt-2 text-3xl font-bold text-gray-800">{totalBelumAcc}</p>
                                 </div>
                             </div>
+                        </div>
+                        )}
+                        <div className='p-8'>
+                            <p>testing</p>
                         </div>
                     </div>
                 </div>
