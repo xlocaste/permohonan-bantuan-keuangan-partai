@@ -197,4 +197,33 @@ class DataPermohonanController extends Controller
 
         return Redirect::route('data-permohonan.index')->with('message', 'Data berhasil dihapus');
     }
+
+    public function dashboard()
+    {
+        $user = Auth::user();
+        $role = $user->roles->first()?->name;
+
+        $totalSudahAcc = 0;
+        $totalBelumAcc = 0;
+
+        if ($role && str_starts_with($role, 'verifikator-')) {
+            $verifikatorStep = (int) str_replace('verifikator-', '', $role);
+
+            $totalSudahAcc = VerifikasiDataPermohonan::where('user_id', $user->id)->count();
+
+            $totalBelumAcc = DataPermohonan::where('status', '!=', 'ditolak')
+                ->whereDoesntHave('verifikasi', function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                })
+                ->where(function ($query) use ($verifikatorStep) {
+                    $query->has('verifikasi', '=', $verifikatorStep - 1);
+                })
+                ->count();
+        }
+
+        return Inertia::render('Dashboard', [
+            'totalSudahAcc' => $totalSudahAcc,
+            'totalBelumAcc' => $totalBelumAcc,
+        ]);
+    }
 }
