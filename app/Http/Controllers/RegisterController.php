@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Http\Requests\Register\StoreRequest;
 use App\Http\Requests\Register\UpdateRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class RegisterController extends Controller
@@ -60,4 +61,10 @@ class RegisterController extends Controller
         ]);
     }
 
+    public function destroy(User $register)
+    {
+        $register->delete();
+
+        return Redirect::route('register.index')->with('message', 'Data berhasil dihapus');
+    }
 }

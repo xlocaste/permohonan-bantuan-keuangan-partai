@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 import PrimaryButton from '@/Components/PrimaryButton';
 
@@ -85,7 +85,17 @@ export default function List({ auth, register }) {
                                                 </button>
                                                 <button
                                                     className="text-red-600 hover:text-red-800"
-                                                    onClick={() => handleVerifikasi(item.id, 'ditolak')}
+                                                    onClick={() => {
+                                                        if (confirm('Yakin ingin menghapus pendaftar ini?')) {
+                                                            router.delete(route('register.destroy', item.id), {
+                                                                onSuccess: () => {
+                                                                },
+                                                                onError: (errors) => {
+                                                                    console.error(errors);
+                                                                },
+                                                            });
+                                                        }
+                                                    }}
                                                 >
                                                     <FaTimes />
                                                 </button>
