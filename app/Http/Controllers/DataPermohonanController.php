@@ -9,7 +9,9 @@ use App\Models\Partai;
 use App\Models\User;
 use App\Models\VerifikasiDataPermohonan;
 use Illuminate\Http\Request;
+use App\Services\FonnteService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -161,6 +163,7 @@ class DataPermohonanController extends Controller
     {
         $user = auth()->user();
 
+        // Cek apakah sudah pernah memverifikasi
         $sudahVerifikasi = VerifikasiDataPermohonan::where('data_permohonan_id', $id)
             ->where('user_id', $user->id)
             ->exists();
@@ -169,15 +172,37 @@ class DataPermohonanController extends Controller
             return back()->with('message', 'Anda sudah memverifikasi permohonan ini.');
         }
 
+        // Simpan verifikasi
         VerifikasiDataPermohonan::create([
             'data_permohonan_id' => $id,
             'user_id' => $user->id,
         ]);
 
-        $jumlah = VerifikasiDataPermohonan::where('data_permohonan_id', $id)->count();
+        // Ambil permohonan dan pemohon
+        $permohonan = DataPermohonan::with('user')->findOrFail($id);
+        $pemohon = $permohonan->user;
+        $jumlahVerifikasi = VerifikasiDataPermohonan::where('data_permohonan_id', $id)->count();
 
-        if ($jumlah >= 7) {
-            DataPermohonan::where('id', $id)->update(['status' => 'disetujui']);
+        // Ambil nomor kontak dari kolom 'kontak'
+        $nomor = preg_replace('/[^0-9]/', '', $pemohon->kontak);
+        if (str_starts_with($nomor, '0')) {
+            $nomor = '62' . substr($nomor, 1);
+        }
+
+        // Kirim WA untuk setiap verifikasi
+        $pesan = "Halo *{$pemohon->name}*, permohonan bantuan dana Anda telah diverifikasi oleh verifikator ke-{$jumlahVerifikasi}. Harap tunggu proses selanjutnya.";
+
+        $res1 = app(FonnteService::class)->send($nomor, $pesan);
+        Log::info('WA ke pemohon:', ['kontak' => $pemohon->kontak, 'respon' => $res1]);
+
+        // Jika sudah diverifikasi penuh → setujui dan kirim pesan akhir
+        if ($jumlahVerifikasi >= 7) {
+            $permohonan->status = 'disetujui';
+            $permohonan->save();
+
+            $pesanFinal = "Selamat *{$pemohon->name}*! Permohonan Anda telah *DISETUJUI* oleh 7 verifikator. Silakan cek dashboard Anda.";
+            $res2 = app(FonnteService::class)->send($nomor, $pesanFinal);
+            Log::info('WA disetujui:', ['kontak' => $pemohon->kontak, 'respon' => $res2]);
         }
 
         return back()->with('message', 'Berhasil verifikasi.');
