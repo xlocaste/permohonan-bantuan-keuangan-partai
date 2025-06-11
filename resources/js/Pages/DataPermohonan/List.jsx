@@ -5,15 +5,38 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 
-export default function ListDataPermohonan({
-    auth,
-    dataPermohonan,
-    notifikasi,
-}) {
+export default function ListDataPermohonan({ auth, dataPermohonan, notifikasi }) {
     const [showModal, setShowModal] = useState(false);
     const [selectedPermohonanId, setSelectedPermohonanId] = useState(null);
     const [pesanPenolakan, setPesanPenolakan] = useState("");
     const [activeNotifikasi, setActiveNotifikasi] = useState(notifikasi || []);
+    const [showVerifikasiModal, setShowVerifikasiModal] = useState(false);
+
+    const openVerifikasiModal = (permohonanId) => {
+        setSelectedPermohonanId(permohonanId);
+        setShowVerifikasiModal(true);
+    };
+
+    const submitVerifikasi = () => {
+        const loadingToast = toast.loading("Memproses...");
+        router.post(
+            route("data-permohonan.verifikasi", selectedPermohonanId),
+            {},
+            {
+                onSuccess: () => {
+                    toast.dismiss(loadingToast);
+                    toast.success("Permohonan berhasil disetujui!");
+                    setShowVerifikasiModal(false);
+                    setSelectedPermohonanId(null);
+                    router.reload();
+                },
+                onError: () => {
+                    toast.dismiss(loadingToast);
+                    toast.error("Terjadi kesalahan saat menyetujui.");
+                },
+            }
+        );
+    };
 
     const handleTolak = () => {
         if (!pesanPenolakan.trim()) {
@@ -66,7 +89,7 @@ export default function ListDataPermohonan({
                             >
                                 <button
                                     onClick={() => handleDismissNotif(index)}
-                                    className="absolute top-2 right-2 text-gray-400 hover:text-gray-700"
+                                    className="flex w-full justify-end text-gray-400 hover:text-gray-700"
                                 >
                                     &times;
                                 </button>
@@ -175,8 +198,7 @@ export default function ListDataPermohonan({
                                                 {item.user?.name || "-"}
                                             </td>
                                             <td className="px-4 py-1 border-b text-sm text-gray-700 text-center">
-                                                {item.partai?.nama_partai ||
-                                                    "-"}
+                                                {item.partai?.nama_partai || "-"}
                                             </td>
                                             <td className="px-4 py-1 border-b text-sm text-gray-700 text-center">
                                                 {item.tanggal_permohonan}
@@ -282,40 +304,11 @@ export default function ListDataPermohonan({
                                                 <td className="px-4 py-1 border-b text-center">
                                                     <div className="flex gap-2 justify-center">
                                                         <button
-                                                            onClick={() => {
-                                                                if (
-                                                                    confirm(
-                                                                        "Yakin ingin menyetujui permohonan ini?"
-                                                                    )
-                                                                ) {
-                                                                    router.post(
-                                                                        route(
-                                                                            "data-permohonan.verifikasi",
-                                                                            item.id
-                                                                        ),
-                                                                        {},
-                                                                        {
-                                                                            onSuccess:
-                                                                                () =>
-                                                                                    toast.success(
-                                                                                        "Permohonan berhasil disetujui."
-                                                                                    ),
-                                                                            onError:
-                                                                                () =>
-                                                                                    toast.error(
-                                                                                        "Terjadi kesalahan saat menyetujui."
-                                                                                    ),
-                                                                        }
-                                                                    );
-                                                                }
-                                                            }}
-                                                            className="text-green-500 hover:text-green-700"
+                                                            className="text-green-600 hover:text-green-800"
+                                                            onClick={() => openVerifikasiModal(item.id)}
                                                         >
-                                                            <FaCheck
-                                                                size={20}
-                                                            />
+                                                            <FaCheck />
                                                         </button>
-
                                                         <button
                                                             className="text-red-500 hover:text-red-700"
                                                             onClick={() => {
@@ -348,6 +341,35 @@ export default function ListDataPermohonan({
                                 )}
                             </tbody>
                         </table>
+                        {showVerifikasiModal && (
+                            <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+                                <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                                    <h2 className="text-lg font-semibold mb-4">
+                                        Konfirmasi Verifikasi
+                                    </h2>
+                                    <p className="text-gray-700 mb-6">
+                                        Yakin ingin menyetujui permohonan ini?
+                                    </p>
+                                    <div className="flex justify-end gap-2">
+                                        <button
+                                            className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded"
+                                            onClick={() => {
+                                                setShowVerifikasiModal(false);
+                                                setSelectedPermohonanId(null);
+                                            }}
+                                        >
+                                            Batal
+                                        </button>
+                                        <button
+                                            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+                                            onClick={submitVerifikasi}
+                                        >
+                                            Setujui
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                         {showModal && (
                             <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
                                 <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
