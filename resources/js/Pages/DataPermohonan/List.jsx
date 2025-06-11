@@ -85,25 +85,28 @@ export default function ListDataPermohonan({ auth, dataPermohonan, notifikasi })
                         {activeNotifikasi.map((notif, index) => (
                             <li
                                 key={index}
-                                className="py-4 max-w-[960px] mx-8 mt-8 px-4 sm:px-6 lg:px-8 bg-white rounded-xl border border-gray-200"
+                                className="relative py-4 max-w-[960px] mx-8 mt-8 px-4 sm:px-6 lg:px-8 bg-white rounded-xl border border-gray-200"
                             >
                                 <button
                                     onClick={() => handleDismissNotif(index)}
-                                    className="flex w-full justify-end text-gray-400 hover:text-gray-700"
+                                    className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-lg leading-none"
+                                    aria-label="Tutup notifikasi"
                                 >
                                     &times;
                                 </button>
-                                <p className="flex items-center">
-                                    {notif.status === "ditolak" ? (
-                                        <FaTimes className="mr-1 text-red-600" />
-                                    ) : (
-                                        <FaCheck className="mr-1 text-green-600" />
-                                    )}
-                                    {notif.pesan}
-                                </p>
-                                <p className="text-sm text-gray-500">
-                                    Status: {notif.status}
-                                </p>
+
+                                {/* Isi notifikasi */}
+                                <div className="pr-6">
+                                    <p className="flex items-center mb-1 text-gray-800">
+                                        {notif.status === "ditolak" ? (
+                                            <FaTimes className="mr-1 text-red-600" />
+                                        ) : (
+                                            <FaCheck className="mr-1 text-green-600" />
+                                        )}
+                                        {notif.pesan}
+                                    </p>
+                                    <p className="text-sm text-gray-500">Status: {notif.status}</p>
+                                </div>
                             </li>
                         ))}
                     </ul>
