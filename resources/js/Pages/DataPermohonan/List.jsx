@@ -124,7 +124,7 @@ export default function ListDataPermohonan({ auth, dataPermohonan, notifikasi })
                     {auth?.user?.roles?.some(
                         (role) => role.name === "anggota"
                     ) && (
-                        <div className="flex justify-end m-4 mt-0">
+                        <div className="flex justify-end m-4 mr-0 mt-0">
                             <PrimaryButton>
                                 <Link href={route("data-permohonan.create")}>
                                     + TAMBAH PERMOHONAN
