@@ -89,23 +89,50 @@ class DataPermohonanController extends Controller
         ]);
     }
 
-    public function laporan()
+    public function laporan(Request $request)
     {
         $user = Auth::user();
+
+        $searchTanggal = $request->input('search_tanggal');
+        $searchNama = $request->input('search_nama');
+        $filterBulan = $request->input('filter_bulan');
+        $filterTahun = $request->input('filter_tahun');
 
         $dataTerverifikasiPenuh = DataPermohonan::with('user', 'partai')
             ->whereHas('verifikasi', function ($q) {
                 $q->select('data_permohonan_id')
-                ->groupBy('data_permohonan_id')
-                ->havingRaw('COUNT(*) = 7');
+                    ->groupBy('data_permohonan_id')
+                    ->havingRaw('COUNT(*) = 7');
             })
-            ->paginate(10);
+            ->when($searchNama, function ($query, $searchNama) {
+                $query->whereHas('user', function ($q) use ($searchNama) {
+                    $q->where('name', 'like', '%' . $searchNama . '%');
+                });
+            })
+            ->when($searchTanggal, function ($query, $searchTanggal) {
+                $query->where('tanggal_permohonan', 'like', '%' . $searchTanggal . '%');
+            })
+            ->when($filterBulan, function ($query, $filterBulan) {
+                $query->whereMonth('tanggal_permohonan', $filterBulan);
+            })
+            ->when($filterTahun, function ($query, $filterTahun) {
+                $query->whereYear('tanggal_permohonan', $filterTahun);
+            })
+            ->orderBy('tanggal_permohonan', 'desc')
+            ->paginate(10)
+            ->appends($request->only('search_nama', 'search_tanggal', 'filter_bulan', 'filter_tahun')); // agar pagination membawa filter
 
         return inertia('Laporan/List', [
             'auth' => [
                 'user' => $user,
             ],
             'dataPermohonan' => $dataTerverifikasiPenuh,
+            'filters' => [
+                'search_nama' => $searchNama,
+                'search_tanggal' => $searchTanggal,
+                'filter_bulan' => $filterBulan,
+                'filter_tahun' => $filterTahun,
+            ]
         ]);
     }
 
