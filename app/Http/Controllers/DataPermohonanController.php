@@ -150,6 +150,29 @@ class DataPermohonanController extends Controller
         return response()->file(storage_path("app/public/laporan-{$dataPermohonan}.pdf"))->deleteFileAfterSend();
     }
 
+    public function printAll()
+    {
+        $dataPermohonan = DataPermohonan::with(['user', 'partai'])
+            ->whereHas('verifikasi', function ($q) {
+                $q->select('data_permohonan_id')
+                ->groupBy('data_permohonan_id')
+                ->havingRaw('COUNT(*) = 7');
+            })
+            ->get();
+
+        $html = view('pdf.daftarDataPermohonan', ['dataPermohonan' => $dataPermohonan])->render();
+
+        $filename = 'laporan-terverifikasi-7-' . now()->format('YmdHis') . '.pdf';
+
+        Browsershot::html($html)
+            ->format('A4')
+            ->margins(10, 10, 10, 10)
+            ->waitUntilNetworkIdle()
+            ->savePdf(storage_path("app/public/{$filename}"));
+
+        return response()->file(storage_path("app/public/{$filename}"))->deleteFileAfterSend();
+    }
+
     public function store(StoreRequest $request)
     {
         $suratPermohonanPath = $request->file('surat_permohonan')->store('surat_permohonan', 'public');

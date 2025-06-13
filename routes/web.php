@@ -97,6 +97,7 @@ Route::prefix('/laporan')->name('laporan.')->group(function() {
     });
     Route::get('/', [DataPermohonanController::class, 'laporan'])->name('index');
     Route::get('/{dataPermohonan}/print', [DataPermohonanController::class, 'print'])->name('print');
+    Route::get('/print/all', [DataPermohonanController::class, 'printAll'])->name('printAll');
 });
 
 Route::prefix('/aktivitas')->name('aktivitas.')->group(function() {
