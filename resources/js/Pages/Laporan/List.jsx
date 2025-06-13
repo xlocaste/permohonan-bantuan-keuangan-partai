@@ -35,13 +35,13 @@ export default function ListLaporan({ auth, dataPermohonan }) {
                                         <td className="px-4 py-2 border-b text-sm text-center">{item.rekening}</td>
                                         <td className="px-4 py-2 border-b text-sm text-center">{item.keterangan}</td>
                                         <td className="px-4 py-2 border-b text-sm text-center">
-                                            <Link
+                                            <a
                                                 href={route('laporan.print', item.id)}
                                                 target="_blank"
                                                 className="text-blue-500 text-xl rounded"
                                             >
                                                 <IoPrint />
-                                            </Link>
+                                            </a>
                                         </td>
                                     </tr>
                                 ))

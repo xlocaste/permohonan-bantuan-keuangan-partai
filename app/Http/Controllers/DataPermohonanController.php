@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Spatie\Browsershot\Browsershot;
+use Illuminate\Support\Facades\Storage;
 
 class DataPermohonanController extends Controller
 {
@@ -110,10 +112,15 @@ class DataPermohonanController extends Controller
     public function print($dataPermohonan)
     {
         $permohonan = DataPermohonan::with(['user', 'partai'])->findOrFail($dataPermohonan);
+        $html = view('pdf.laporan', ['dataPermohonan' => [$permohonan]])->render();
 
-        return Inertia::render('Laporan/Print', [
-            'permohonan' => $permohonan,
-        ]);
+        Browsershot::html($html)
+            ->format('A4')
+            ->margins(10, 10, 10, 10)
+            ->waitUntilNetworkIdle()
+            ->savePdf(storage_path("app/public/laporan-{$dataPermohonan}.pdf"));
+
+        return response()->file(storage_path("app/public/laporan-{$dataPermohonan}.pdf"))->deleteFileAfterSend();
     }
 
     public function store(StoreRequest $request)
