@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -10,8 +10,15 @@ export default function UpdatePartai({ auth, partai }) {
         alamat: partai.alamat || '',
     });
 
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        setShowConfirmModal(true); // Tampilkan konfirmasi dulu
+    };
+
+    const confirmUpdate = () => {
+        setShowConfirmModal(false);
         put(route('partai.update', partai.id));
     };
 
@@ -64,6 +71,32 @@ export default function UpdatePartai({ auth, partai }) {
                     </div>
                 </form>
             </div>
+
+            {/* Modal Konfirmasi */}
+            {showConfirmModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+                        <h2 className="text-lg font-semibold mb-4">Konfirmasi Update</h2>
+                        <p className="mb-4 text-sm text-gray-700">
+                            Apakah Anda yakin ingin mengupdate data partai ini?
+                        </p>
+                        <div className="flex justify-end gap-2">
+                            <button
+                                className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
+                                onClick={() => setShowConfirmModal(false)}
+                            >
+                                Batal
+                            </button>
+                            <button
+                                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+                                onClick={confirmUpdate}
+                            >
+                                Ya, Update
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </AuthenticatedLayout>
     );
 }
