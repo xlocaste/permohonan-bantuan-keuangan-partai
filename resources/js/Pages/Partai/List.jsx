@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -6,10 +6,21 @@ import { FaTrash } from "react-icons/fa6";
 import { FaRegEdit } from "react-icons/fa";
 
 export default function ListPartai({ auth, partai }) {
-    const handlePageChange = (url) => {
-        if (url) {
-            router.visit(url);
-        }
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [selectedPartaiId, setSelectedPartaiId] = useState(null);
+
+    const handleDeleteClick = (id) => {
+        setSelectedPartaiId(id);
+        setShowDeleteModal(true);
+    };
+
+    const confirmDelete = () => {
+        router.delete(route('partai.destroy', selectedPartaiId), {
+            onSuccess: () => {
+                setShowDeleteModal(false);
+                setSelectedPartaiId(null);
+            },
+        });
     };
 
     return (
@@ -53,17 +64,12 @@ export default function ListPartai({ auth, partai }) {
                                                     >
                                                         <FaRegEdit />
                                                     </Link>
-                                                    <Link
-                                                        as="button"
+                                                    <button
                                                         className="text-red-400"
-                                                        onClick={() => {
-                                                            if (confirm('Yakin ingin menghapus partai ini?')) {
-                                                                router.delete(route('partai.destroy', item.id));
-                                                            }
-                                                        }}
+                                                        onClick={() => handleDeleteClick(item.id)}
                                                     >
                                                         <FaTrash />
-                                                    </Link>
+                                                    </button>
                                                 </div>
                                             </td>
                                         )}
@@ -80,6 +86,32 @@ export default function ListPartai({ auth, partai }) {
                     </table>
                 </div>
             </div>
+
+            {/* Modal Konfirmasi Hapus */}
+            {showDeleteModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+                        <h2 className="text-lg font-semibold mb-4">Konfirmasi Hapus</h2>
+                        <p className="mb-4 text-sm text-gray-700">
+                            Apakah Anda yakin ingin menghapus partai ini? Tindakan ini tidak bisa dibatalkan.
+                        </p>
+                        <div className="flex justify-end gap-2">
+                            <button
+                                className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
+                                onClick={() => setShowDeleteModal(false)}
+                            >
+                                Batal
+                            </button>
+                            <button
+                                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+                                onClick={confirmDelete}
+                            >
+                                Ya, Hapus
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </AuthenticatedLayout>
     );
 }
