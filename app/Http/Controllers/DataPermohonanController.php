@@ -203,17 +203,29 @@ class DataPermohonanController extends Controller
 
     public function update(UpdateRequest $request, $dataPermohonan)
     {
-        $permohonan = DataPermohonan::findOrFail($dataPermohonan);
+        $permohonan = DataPermohonan::with('user')->findOrFail($dataPermohonan);
+        $pemohon = $permohonan->user;
 
         $permohonan->status = $request->status;
-
         $permohonan->alasan_penolakan = $request->status === 'ditolak'
             ? $request->alasan_penolakan
             : null;
 
         $permohonan->save();
 
-        return redirect()->route('data-permohonan.index');
+        if ($request->status === 'ditolak' && $request->filled('alasan_penolakan')) {
+            $nomor = preg_replace('/[^0-9]/', '', $pemohon->kontak);
+            if (str_starts_with($nomor, '0')) {
+                $nomor = '62' . substr($nomor, 1);
+            }
+
+            $pesan = "Maaf *{$pemohon->name}*, permohonan bantuan dana Anda *DITOLAK*.\n\nAlasan: *{$request->alasan_penolakan}*.";
+
+            $res = app(FonnteService::class)->send($nomor, $pesan);
+            \Log::info('WA penolakan dikirim:', ['kontak' => $pemohon->kontak, 'respon' => $res]);
+        }
+
+        return redirect()->route('data-permohonan.index')->with('message', 'Data berhasil diperbarui.');
     }
 
     public function verifikasi($id)
