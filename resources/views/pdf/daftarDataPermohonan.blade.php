@@ -50,6 +50,10 @@
         </tbody>
     </table>
 
+    @php
+        \Carbon\Carbon::setLocale('id');
+    @endphp
+
     <div class="mt-8 text-right pr-6">
         <p>Singkawang, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
         <p class="mt-10 font-semibold">Kepala Badan</p>
