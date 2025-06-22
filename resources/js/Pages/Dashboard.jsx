@@ -35,6 +35,18 @@ export default function Dashboard({ auth, totalSudahAcc, totalBelumAcc }) {
 
                         {/* === ANGGOTA === */}
                         {auth.user?.roles?.some(role => ['anggota', 'admin'].includes(role.name)) && (
+                            <>
+                            <div className="px-8 flex justify-end pt-8 items-center space-x-4">
+                                <p className='font-bold'>Download Panduan Aplikasi</p>
+                                <a
+                                    href="/files/format-permohonan.pdf"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-md shadow"
+                                >
+                                    Unduh Format PDF
+                                </a>
+                            </div>
                             <div className="p-8 space-y-10">
                                 {/* Informasi Card */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -92,6 +104,7 @@ export default function Dashboard({ auth, totalSudahAcc, totalBelumAcc }) {
                                     </div>
                                 </div>
                             </div>
+                            </>
                         )}
                     </div>
                 </div>
