@@ -39,7 +39,7 @@ export default function Dashboard({ auth, totalSudahAcc, totalBelumAcc }) {
                             <div className="px-8 flex justify-end pt-8 items-center space-x-4">
                                 <p className='font-bold'>Download Panduan Aplikasi</p>
                                 <a
-                                    href="/files/PANDUAN APLIKASI PERMOHONAN BANTUAN KEUANGAN PARTAI POLITIK.pdf"
+                                    href="/files/MANUAL BOOK.pdf"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-md shadow"
